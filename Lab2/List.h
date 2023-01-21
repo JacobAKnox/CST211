@@ -198,7 +198,8 @@ List<T>& List<T>::operator=(List&& move) noexcept
 template <typename T>
 List<T>::operator bool() const
 {
-    
+    // if the list is empty, return false
+    return l_head != nullptr;
 }
 
 template <typename T>
@@ -244,13 +245,35 @@ void List<T>::Prepend(const T data)
 template <typename T>
 void List<T>::RemoveLast()
 {
-    
+    // pop the last node off the list
+    Node<T>* temp = l_tail;
+    l_tail = l_tail->prev_ptr;
+    // if the tail is null, the list is empty
+    if (l_tail != nullptr)
+    {
+        l_tail->next_ptr = nullptr;
+    } else
+    {
+        l_head = nullptr;
+    }
+    delete temp;
 }
 
 template <typename T>
 void List<T>::RemoveFirst()
 {
-    
+    // pop the first node off the list
+    Node<T>* temp = l_head;
+    l_head = l_head->next_ptr;
+    // if the head is null, the list is empty
+    if (l_head != nullptr)
+    {
+        l_head->prev_ptr = nullptr;
+    } else
+    {
+        l_tail = nullptr;
+    }
+    delete temp;
 }
 
 template <typename T>
