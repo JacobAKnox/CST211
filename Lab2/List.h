@@ -128,9 +128,10 @@ List<T>::List(const List& copy)
         temp->next_ptr = new Node<T>(copy_temp->n_data);
         temp->next_ptr->prev_ptr = temp;
         copy_temp = copy_temp->next_ptr;
-        this->l_tail = temp;
         temp = temp->next_ptr;
     }
+    // set the tail
+    this->l_tail = temp;
     // set the count
     this->l_count = copy.l_count;
 }
@@ -157,9 +158,10 @@ List<T>::List(List&& move) noexcept
         temp->next_ptr = new Node<T>(move_temp->n_data);
         temp->next_ptr->prev_ptr = temp;
         move_temp = move_temp->next_ptr;
-        this->l_tail = temp;
         temp = temp->next_ptr;
     }
+    // set the tail
+    this->l_tail = temp;
     // set the count
     this->l_count = move.l_count;
 }
@@ -199,9 +201,10 @@ List<T>& List<T>::operator=(const List& copy)
         temp->next_ptr = new Node<T>(copy_temp->n_data);
         temp->next_ptr->prev_ptr = temp;
         copy_temp = copy_temp->next_ptr;
-        this->l_tail = temp;
         temp = temp->next_ptr;
     }
+    // set the tail
+    this->l_tail = temp;
     // set the count
     this->l_count = copy.l_count;
     return *this;
@@ -229,9 +232,10 @@ List<T>& List<T>::operator=(List&& move) noexcept
         temp->next_ptr = new Node<T>(move_temp->n_data);
         temp->next_ptr->prev_ptr = temp;
         move_temp = move_temp->next_ptr;
-        this->l_tail = temp;
         temp = temp->next_ptr;
     }
+    // set the tail
+    this->l_tail = temp;
     // set the count
     this->l_count = move.l_count;
     return *this;
