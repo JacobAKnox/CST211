@@ -1,4 +1,4 @@
-//Jacob Knox CST211 Lab2 Due: 1/26/2023
+//Jacob Knox CST211 Lab3 Due: 2/2/2023
 
 #ifndef LISTTEMPLATE_H
 #define LISTTEMPLATE_H
@@ -20,6 +20,11 @@ private:
     Node<T>* l_head;
     Node<T>* l_tail;
     int l_count;
+
+    void AddNode(Node<T> * const before, Node<T> * const after, T data);
+    void RemoveNode(Node<T> * const node);
+
+    template <typename U> friend class Stack;
 public:
     List();
     List(const T data);
@@ -51,6 +56,43 @@ public:
     size_t Size() const noexcept;
     bool operator==(const List<T>& rhs) const noexcept;
 };
+
+// should only be called when node is not at the head or tail
+// i.e. before != nullptr && after != nullptr
+template <typename T>
+void List<T>::AddNode(Node<T>* const before, Node<T>* const after, T data)
+{
+    // create a new node with data
+    Node<T>* new_node = new Node<T>(data);
+    
+    // set the new node's next pointer to the node after the node to add before
+    new_node->next_ptr = after;
+    // set the new node's previous pointer to the node before the node to add after
+    new_node->prev_ptr = before;
+
+    // set the node before the node to add after's next pointer to the new node
+    before->next_ptr = new_node;
+    // set the node after the node to add before's previous pointer to the new node
+    after->prev_ptr = new_node;
+
+    // increment the count
+    l_count++;
+}
+
+//should only be called when node is not at the head or tail
+//i.e. node->prev_ptr != nullptr && node->next_ptr != nullptr
+template <typename T>
+void List<T>::RemoveNode(Node<T>* const node)
+{
+    // set the previous node's next pointer to the next node
+    node->prev_ptr->next_ptr = node->next_ptr;
+    // set the next node's previous pointer to the previous node
+    node->next_ptr->prev_ptr = node->prev_ptr;
+    // delete the node
+    delete node;
+    // decrement the count
+    l_count--;
+}
 
 template <typename T>
 List<T>::List() : l_head(nullptr), l_tail(nullptr), l_count(0) { }
@@ -220,6 +262,7 @@ void List<T>::Append(const T data)
         temp->prev_ptr = l_tail;
         l_tail = temp;
     }
+    l_count++;
 }
 
 template <typename T>
@@ -240,6 +283,7 @@ void List<T>::Prepend(const T data)
         temp->next_ptr = l_head;
         l_head = temp;
     }
+    l_count++;
 }
 
 template <typename T>
@@ -257,6 +301,7 @@ void List<T>::RemoveLast()
         l_head = nullptr;
     }
     delete temp;
+    l_count--;
 }
 
 template <typename T>
@@ -274,6 +319,7 @@ void List<T>::RemoveFirst()
         l_tail = nullptr;
     }
     delete temp;
+    l_count--;
 }
 
 template <typename T>
@@ -288,27 +334,14 @@ void List<T>::Extract(const T data)
     // check if the head is the node to be removed
     if (l_head->n_data == data)
     {
-        Node<T>* temp = l_head;
-        l_head = l_head->next_ptr;
-        // only need to check if the head is null, if it is, the tail is also null
-        if (l_head != nullptr)
-        {
-            l_head->prev_ptr = nullptr;
-        } else
-        {
-            l_tail = nullptr;
-        }
-        delete temp;
+        RemoveFirst();
         return;
     }
 
     // check if the tail is the node to be removed
     if (l_tail->n_data == data)
     {
-        Node<T>* temp = l_tail;
-        l_tail = l_tail->prev_ptr;
-        l_tail->next_ptr = nullptr;
-        delete temp;
+        RemoveLast();
         return;
     }
 
@@ -318,12 +351,7 @@ void List<T>::Extract(const T data)
     {
         if (temp->n_data == data)
         {
-            temp->prev_ptr->next_ptr = temp->next_ptr;
-            if (temp->next_ptr != nullptr)
-            {
-                temp->next_ptr->prev_ptr = temp->prev_ptr;
-            }
-            delete temp;
+            RemoveNode(temp);
             return;
         }
         temp = temp->next_ptr;
@@ -343,55 +371,24 @@ void List<T>::InsertAfter(const T data, const T after)
         throw Exception("List is empty");
     }
 
-    // check if the head is the node to be inserted after
-    if (l_head->n_data == after)
-    {
-        Node<T>* temp = new Node<T>(data);
-        temp->next_ptr = l_head->next_ptr;
-        temp->prev_ptr = l_head;
-        l_head->next_ptr = temp;
-        if (temp->next_ptr != nullptr)
-        {
-            temp->next_ptr->prev_ptr = temp;
-        }
-        if (l_tail == l_head)
-        {
-            l_tail = temp;
-        }
-        return;
-    }
-
     // check if the tail is the node to be inserted after
     if (l_tail->n_data == after)
     {
-        Node<T>* temp = new Node<T>(data);
-        temp->next_ptr = nullptr;
-        temp->prev_ptr = l_tail;
-        l_tail->next_ptr = temp;
-        l_tail = temp;
+        Append(data);
         return;
     }
 
     // check if the node to be inserted after is in the middle of the list
-    Node<T>* temp = l_head;
+    // if we go back to the head, no need to check the head specifically
+    Node<T>* temp = l_tail;
     while (temp != nullptr)
     {
         if (temp->n_data == after)
         {
-            Node<T>* new_node = new Node<T>(data);
-            new_node->next_ptr = temp->next_ptr;
-            new_node->prev_ptr = temp;
-            temp->next_ptr = new_node;
-            if (new_node->next_ptr != nullptr)
-            {
-                new_node->next_ptr->prev_ptr = new_node;
-            } else
-            {
-                l_tail = new_node;
-            }
+            AddNode(temp, temp->next_ptr, data);
             return;
         }
-        temp = temp->next_ptr;
+        temp = temp->prev_ptr;
     }
 
     // no match found, throw an exception
@@ -411,29 +408,7 @@ void List<T>::InsertBefore(const T data, const T before)
     // check if the head is the node to be inserted before
     if (l_head->n_data == before)
     {
-        Node<T>* temp = new Node<T>(data);
-        temp->next_ptr = l_head;
-        temp->prev_ptr = nullptr;
-        l_head->prev_ptr = temp;
-        l_head = temp;
-        return;
-    }
-
-    // check if the tail is the node to be inserted before
-    if (l_tail->n_data == before)
-    {
-        Node<T>* temp = new Node<T>(data);
-        temp->next_ptr = l_tail;
-        temp->prev_ptr = l_tail->prev_ptr;
-        l_tail->prev_ptr = temp;
-        if (temp->prev_ptr != nullptr)
-        {
-            temp->prev_ptr->next_ptr = temp;
-        }
-        if (l_head == l_tail)
-        {
-            l_head = temp;
-        }
+        Prepend(data);
         return;
     }
 
@@ -443,17 +418,7 @@ void List<T>::InsertBefore(const T data, const T before)
     {
         if (temp->n_data == before)
         {
-            Node<T>* new_node = new Node<T>(data);
-            new_node->next_ptr = temp;
-            new_node->prev_ptr = temp->prev_ptr;
-            temp->prev_ptr = new_node;
-            if (new_node->prev_ptr != nullptr)
-            {
-                new_node->prev_ptr->next_ptr = new_node;
-            } else
-            {
-                l_head = new_node;
-            }
+            AddNode(temp->prev_ptr, temp, data);
             return;
         }
         temp = temp->next_ptr;
