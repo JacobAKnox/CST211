@@ -1,6 +1,8 @@
 #ifndef STACKEMPLATE_H
 #define STACKTEMPLATE_H
 
+//Jacob Knox CST211 Lab3 Due: 2/2/2023
+
 #include "List.h"
 #include "Exception.h"
 
