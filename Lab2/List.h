@@ -139,31 +139,14 @@ List<T>::List(const List& copy)
 template <typename T>
 List<T>::List(List&& move) noexcept
 {
-    // move constructor, perform a deep copy of move
-    if (move.l_head == nullptr)
-    {
-        // other list is empty, set this list to empty
-        this->l_count = 0;
-        this->l_head = nullptr;
-        this->l_tail = nullptr;
-        return;
-    }
-    // copy the first node
-    this->l_head = new Node<T>(move.l_head->n_data);
-    Node<T>* move_temp = move.l_head->next_ptr;
-    Node<T>* temp = this->l_head;
-    // copy the rest of the nodes
-    while (move_temp != nullptr)
-    {
-        temp->next_ptr = new Node<T>(move_temp->n_data);
-        temp->next_ptr->prev_ptr = temp;
-        move_temp = move_temp->next_ptr;
-        temp = temp->next_ptr;
-    }
-    // set the tail
-    this->l_tail = temp;
-    // set the count
+    // move constructor, perform a shallow copy of move
+    this->l_head = move.l_head;
+    this->l_tail = move.l_tail;
     this->l_count = move.l_count;
+    // set move to empty
+    move.l_head = nullptr;
+    move.l_tail = nullptr;
+    move.l_count = 0;
 }
 
 template <typename T>
@@ -212,32 +195,15 @@ List<T>& List<T>::operator=(const List& copy)
 
 template <typename T>
 List<T>& List<T>::operator=(List&& move) noexcept
-{
-    // move assignment, perform a deep copy of move
-    if (move.l_head == nullptr)
-    {
-        // other list is empty, set this list to empty
-        this->l_count = 0;
-        this->l_head = nullptr;
-        this->l_tail = nullptr;
-        return *this;
-    }
-    // copy the first node
-    this->l_head = new Node<T>(move.l_head->n_data);
-    Node<T>* move_temp = move.l_head->next_ptr;
-    Node<T>* temp = this->l_head;
-    // copy the rest of the nodes
-    while (move_temp != nullptr)
-    {
-        temp->next_ptr = new Node<T>(move_temp->n_data);
-        temp->next_ptr->prev_ptr = temp;
-        move_temp = move_temp->next_ptr;
-        temp = temp->next_ptr;
-    }
-    // set the tail
-    this->l_tail = temp;
-    // set the count
+{   
+    // just need to copy the pointers and count
+    this->l_head = move.l_head;
+    this->l_tail = move.l_tail;
     this->l_count = move.l_count;
+    // set move's pointers to null and count to 0 so nodes aren't deleted
+    move.l_head = nullptr;
+    move.l_tail = nullptr;
+    move.l_count = 0;
     return *this;
 }
 
