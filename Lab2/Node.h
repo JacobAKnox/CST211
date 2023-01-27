@@ -1,4 +1,4 @@
-//Jacob Knox CST211 Lab2 Due: 1/26/2023
+//Jacob Knox CST211 Lab3 Due: 2/2/2023
 
 #ifndef NODETEMPLATE_H
 #define NODETEMPLATE_H
@@ -24,7 +24,7 @@ public:
     Node(Node&& copy) noexcept;
     Node(const T data);
     Node(const T data, Node<T>* next, Node<T>* prev);
-    ~Node() = default;
+    ~Node();
 
     Node<T>& operator=(const Node& copy);
     Node<T>& operator=(Node&& copy) noexcept;
@@ -49,6 +49,14 @@ template <typename T>
 Node<T>::Node(const T data)
     : n_data(data)
 {
+}
+
+template <typename T>
+Node<T>::~Node() {
+    // destructor
+    this->n_data = T{};
+    this->next_ptr = nullptr;
+    this->prev_ptr = nullptr;
 }
 
 template <typename T>
