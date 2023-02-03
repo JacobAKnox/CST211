@@ -34,7 +34,6 @@ public:
     void Print() const; 
 
     int getMaxSize() const;
-
 };
 
 // simple assignments work for all constructors

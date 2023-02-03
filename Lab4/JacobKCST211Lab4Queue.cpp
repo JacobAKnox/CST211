@@ -71,8 +71,8 @@ Queue<string> ReturnStrQueue(bool remove = false);
 
 // Array of test functions
 FunctionPointer test_functions[] = { test_default_ctor, test_param_ctor, test_copy_ctor, test_move_ctor,
-test_copy_op_eq, test_move_op_eq, test_enqueue, test_enqueue_limtis, test_dequeue, test_dequeue_limits/*, test_peek, 
-test_peek_limits, test_empty, test_full, test_size, test_complex_default_ctor, test_complex_param_ctor, test_complex_copy_ctor,
+test_copy_op_eq, test_move_op_eq, test_enqueue, test_enqueue_limtis, test_dequeue, test_dequeue_limits, test_peek, 
+test_peek_limits, test_empty, test_full, test_size/*, test_complex_default_ctor, test_complex_param_ctor, test_complex_copy_ctor,
 test_complex_move_ctor, test_complex_copy_op_eq, test_complex_move_op_eq, test_complex_enqueue, test_complex_enqueue_limtis,
 test_complex_dequeue, test_complex_dequeue_limits, test_complex_peek, test_complex_peek_limits, test_complex_empty,
 test_complex_full, test_complex_size */};
@@ -546,83 +546,83 @@ bool test_peek_limits()
 	return pass;
 }
 
-// bool test_empty()
-// {
-// 	bool pass = true;
+bool test_empty()
+{
+	bool pass = true;
 
-// 	Queue<int> queue_test(NUM_SIZE);
+	Queue<int> queue_test(NUM_SIZE);
 
-// 	//list should start empty
-// 	if (!queue_test.IsEmpty()) {
-// 		pass = false;
-// 	}
+	//list should start empty
+	if (!queue_test.isEmpty()) {
+		pass = false;
+	}
 
-// 	for (int i = 0; i < NUM_SIZE; i++) {
-// 		queue_test.Enqueue(i);
-// 		//list should not be empty at each Enqueue
-// 		if (queue_test.IsEmpty()) {
-// 			pass = false;
-// 		}
-// 	}
+	for (int i = 0; i < NUM_SIZE; i++) {
+		queue_test.Enqueue(i);
+		//list should not be empty at each Enqueue
+		if (queue_test.isEmpty()) {
+			pass = false;
+		}
+	}
 
-// 	cout << "isEmpty test ";
+	cout << "isEmpty test ";
 
-// 	return pass;
-// }
+	return pass;
+}
 
-// bool test_full()
-// {
-// 	bool pass = true;
+bool test_full()
+{
+	bool pass = true;
 
-// 	Queue<int> queue_test(NUM_SIZE);
+	Queue<int> queue_test(NUM_SIZE);
 
-// 	if (queue_test.IsFull()) {
-// 		pass = false;
-// 	}
+	if (queue_test.isFull()) {
+		pass = false;
+	}
 
-// 	for (int i = 0; i < NUM_SIZE; i++) {
-// 		// Queue should not be full until the last Enqueue
-// 		if (queue_test.IsFull()) {
-// 			pass = false;
-// 		}
-// 		queue_test.Enqueue(i);
-// 	}
+	for (int i = 0; i < NUM_SIZE; i++) {
+		// Queue should not be full until the last Enqueue
+		if (queue_test.isFull()) {
+			pass = false;
+		}
+		queue_test.Enqueue(i);
+	}
 
-// 	if (!queue_test.IsFull()) {
-// 		pass = false;
-// 	}
+	if (!queue_test.isFull()) {
+		pass = false;
+	}
 
-// 	cout << "isFull test ";
+	cout << "isFull test ";
 
-// 	return pass;
-// }
+	return pass;
+}
 
-// bool test_size()
-// {
-// 	bool pass = true;
+bool test_size()
+{
+	bool pass = true;
 
-// 	Queue<int> queue_test(NUM_SIZE);
+	Queue<int> queue_test(NUM_SIZE);
 
-// 	if (queue_test.getSize() != 0) {
-// 		pass = false;
-// 	}
+	if (queue_test.getSize() != 0) {
+		pass = false;
+	}
 
-// 	for (int i = 0; i < NUM_SIZE; i++) {
-// 		//Queue should be the correct size after each Enqueue
-// 		if (queue_test.getSize() != i) {
-// 			pass = false;
-// 		}
-// 		queue_test.Enqueue(i);
-// 	}
+	for (int i = 0; i < NUM_SIZE; i++) {
+		//Queue should be the correct size after each Enqueue
+		if (queue_test.getSize() != i) {
+			pass = false;
+		}
+		queue_test.Enqueue(i);
+	}
 
-// 	if (queue_test.getSize() != NUM_SIZE) {
-// 		pass = false;
-// 	}
+	if (queue_test.getSize() != NUM_SIZE) {
+		pass = false;
+	}
 
-// 	cout << "getSize test ";
+	cout << "getSize test ";
 
-// 	return pass;
-// }
+	return pass;
+}
 
 // bool test_complex_default_ctor() 
 // { 
