@@ -1,0 +1,79 @@
+$ ./run.sh 
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+1
+ENQUEUE Function Called -
+Enter KEY and VALUE of NODE to ENQUEUE in the Queue
+1
+2
+Node  ENQUEUED successfully
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+1
+ENQUEUE Function Called -
+Enter KEY and VALUE of NODE to ENQUEUE in the Queue
+3
+4
+Node  ENQUEUED successfully
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+1
+ENQUEUE Function Called -
+Enter KEY and VALUE of NODE to ENQUEUE in the Queue
+5
+6
+Node  ENQUEUED successfully
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+5
+Display Function Called - 
+All values in the Queue are :
+(1,2) -> (3,4) -> (5,6) -> 
+
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+2
+DEQUEUE Function Called - 
+Dequeued Value is: (1,2)
+What operation do you want to perform?Select Option number. Enter 0 to exit.
+1. Enqueue()
+2. Dequeue()
+3. isEmpty()
+4. count()
+5. display()
+6. Clear Screen
+
+0
+
+//NO LEAKS
+// code will also be on github
