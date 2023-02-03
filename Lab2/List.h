@@ -23,8 +23,7 @@ private:
 
     void AddNode(Node<T> * const before, Node<T> * const after, T data);
     void RemoveNode(Node<T> * const node);
-
-    template <typename U> friend class Stack;
+    
 public:
     List();
     List(const T data);
