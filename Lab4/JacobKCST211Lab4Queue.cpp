@@ -498,6 +498,7 @@ bool test_peek()
 		queue_test.Dequeue();
 	}
 
+	// make sure wrap around works
 	for (int i = NUM_SIZE; i < NUM_SIZE + REMOVE_SIZE; i++)
 	{
 		queue_test.Enqueue(i);

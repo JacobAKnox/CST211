@@ -54,6 +54,7 @@ Queue<T>::Queue(Queue&& copy) noexcept : m_size(copy.m_size), m_queue(copy.m_que
 template <typename T>
 Queue<T>::~Queue() = default;
 
+// simple assignments work for all operators
 template <typename T>
 Queue<T>& Queue<T>::operator=(const Queue& move) {
     m_size = move.m_size;
@@ -63,6 +64,7 @@ Queue<T>& Queue<T>::operator=(const Queue& move) {
     return *this;
 }
 
+// simple assignments work for all operators
 template <typename T>
 Queue<T>& Queue<T>::operator=(Queue&& copy) noexcept {
     m_size = copy.m_size;
@@ -74,10 +76,13 @@ Queue<T>& Queue<T>::operator=(Queue&& copy) noexcept {
 
 template <typename T>
 void Queue<T>::Enqueue(const T data) {
+    // if the queue is full, throw an exception
     if (isFull()) {
         throw Exception("Queue is full");
     }
+    // find where to put the data
     int location = start_index + m_size;
+    // if the location is past the end of the array, wrap around
     if (location >= max_size) {
         location -= max_size;
     }
@@ -87,11 +92,14 @@ void Queue<T>::Enqueue(const T data) {
 
 template <typename T>
 T Queue<T>::Dequeue() {
+    // if the queue is empty, throw an exception
     if (isEmpty()) {
         throw Exception("Queue is empty");
     }
+    // get the data
     T data = m_queue[start_index];
     start_index++;
+    // if the start index is past the end of the array, wrap around
     if (start_index >= max_size) {
         start_index -= max_size;
     }
@@ -101,12 +109,15 @@ T Queue<T>::Dequeue() {
 
 template <typename T>
 T Queue<T>::Peek() {
+    // if the queue is empty, throw an exception
     if (isEmpty()) {
         throw Exception("Queue is empty");
     }
+    // data is at the start index
     return m_queue[start_index];
 }
 
+// simple getters below
 template <typename T>
 int Queue<T>::getSize() const {
     return m_size; 
