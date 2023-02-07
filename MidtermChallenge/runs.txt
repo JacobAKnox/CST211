@@ -1,0 +1,26 @@
+Default ctor test passed
+Param ctor test passed
+Copy ctor test passed
+Copy ctor wrap test passed
+Move ctor test passed
+Move ctor wrap test passed
+Copy op= test passed
+Copy ctor wrap test passed
+Move op= test passed
+Move ctor wrap test passed
+Enqueue test passed
+Enqueue limits test passed
+Dequeue test passed
+Dequeue limits test passed
+Peek test passed
+Peek limits test passed
+isEmpty test passed
+isFull test passed
+getSize test passed
+Enqueue test passed
+Dequeue test passed
+
+Total tests: 21
+
+All tests passed! Good job!
+Exiting...

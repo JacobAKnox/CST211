@@ -1,0 +1,6 @@
+Modify your queue class from lab 4 to be based off of the Linked List from lab 2.
+You new code should pass all the same tests from lab 4.
+You can remove the print function.
+
+You should add
+`template <typename U> friend class Queue;` to your list class.
