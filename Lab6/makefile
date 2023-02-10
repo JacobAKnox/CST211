@@ -1,0 +1,11 @@
+CC = g++
+
+TARGET = bst
+
+FLAGS = -std=c++2b -fsanitize=leak
+
+$(TARGET): JacobKCST211Lab6BST.cpp Node.h List.h Exception.h
+	$(CC) $(FLAGS) -o $(TARGET) JacobKCST211Lab6BST.cpp Node.h List.h Exception.h
+
+clean:
+	$(RM) $(TARGET)
