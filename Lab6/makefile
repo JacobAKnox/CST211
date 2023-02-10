@@ -4,8 +4,8 @@ TARGET = bst
 
 FLAGS = -std=c++2b -fsanitize=leak
 
-$(TARGET): JacobKCST211Lab6BST.cpp Node.h List.h Exception.h
-	$(CC) $(FLAGS) -o $(TARGET) JacobKCST211Lab6BST.cpp Node.h List.h Exception.h
+$(TARGET): JacobKCST211Lab6BST.cpp Node.h BST.h Exception.h
+	$(CC) $(FLAGS) -o $(TARGET) JacobKCST211Lab6BST.cpp Node.h BST.h Exception.h
 
 clean:
 	$(RM) $(TARGET)

@@ -1,35 +1,34 @@
-//Jacob Knox CST211 Lab6 Due: 2/16/2023
-
+// Jacob Knox CST211 Lab6 Due: 2/16/2023
 
 #define _CRT_SECURE_NO_WARNINGS
 #define _CRTDBG_MAP_ALLOC
 
-typedef bool(*FunctionPointer)();  // Define a funtion pointer type
+typedef bool (*FunctionPointer)();  // Define a funtion pointer type
 
 #include <string>
 using std::string;
 
 #include <iostream>
-using std::cout;
 using std::cin;
+using std::cout;
 using std::endl;
 
 // crt memory leak detection does not work with gcc. I'm using gcc's memory leak detection
 // #include <crtdbg.h>
 // #include <conio.h>
-#include "List.h"
+#include "BST.h"
 
 // Strings to test
-const string NAMES[] = { "Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
-"Kate", "Terry", "Ann", "Elaine", "Stephanie", "Wanda", "Oscar",
-"Oliver", "Tobey" };
+const string NAMES[] = {"Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
+                        "Kate", "Terry", "Ann", "Elaine", "Stephanie", "Wanda", "Oscar",
+                        "Oliver", "Tobey"};
 
 const int NUM_NAMES = 15;
 const int NUM_SIZE = 10;
 const int NUM_EXTRACT = 4;
 
 // Test function declaration
-// bool test_default_ctor();
+bool test_default_ctor();
 // bool test_param_ctor();
 // bool test_copy_ctor();
 // bool test_move_ctor();
@@ -58,71 +57,63 @@ const int NUM_EXTRACT = 4;
 // List<string> ReturnStrList();
 
 // Array of test functions
-FunctionPointer test_functions[] = { /*test_default_ctor, test_param_ctor, test_param_ctor,
+FunctionPointer test_functions[] = {test_default_ctor /*, test_param_ctor, test_param_ctor,
 test_copy_ctor, test_move_ctor, test_op_equal, test_move_op_equal, test_is_empty,
 test_first_with_value, test_first_empty_list, test_last_with_value, test_last_empty_list,
 test_prepend, test_append, test_purge, test_extract_empty, test_extract_match,
 test_extract_no_match, test_inserta_empty, test_inserta_match, test_inserta_no_match,
-test_insertb_empty, test_insertb_match, test_insertb_no_match, test_default_ctor_complex,
-test_param_ctor_complex, test_copy_ctor_complex, test_move_ctor_complex, test_op_equal_complex,
-test_move_op_equal_complex, test_is_empty_complex, test_first_with_value_complex,
-test_first_empty_list_complex, test_last_with_value_complex, test_last_empty_list_complex,
-test_prepend_complex, test_append_complex, test_purge_complex, test_extract_empty_complex,
-test_extract_match_complex, test_extract_no_match_complex, test_inserta_empty_complex,
-test_inserta_match_complex, test_inserta_no_match_complex, test_insertb_empty_complex,
-test_insertb_match_complex, test_insertb_no_match_complex */};
+test_insertb_empty, test_insertb_match, test_insertb_no_match*/
+};
 
-int main()
-{
-	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+int main() {
+  //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	int failed_tests = 0;
+  int failed_tests = 0;
 
-	// Run the test functions
-	for (FunctionPointer func : test_functions)
-	{
-		if (func())
-		{
-			cout << "passed" << endl;
-		}
-		else
-		{
-			failed_tests++;
-			cout << "***** failed *****" << endl;
-		}
-	}
+  // Run the test functions
+  for (FunctionPointer func : test_functions) {
+    if (func()) {
+      cout << "passed" << endl;
+    } else {
+      failed_tests++;
+      cout << "***** failed *****" << endl;
+    }
+  }
 
-	if (failed_tests > 0)
-		cout << endl << "You have " << failed_tests << " failed tests";
-	else
-		cout << endl << "All tests passed! Good job!";
+  cout << endl
+       << "Total tests: " << sizeof(test_functions) / sizeof(FunctionPointer) << endl;
 
-	cout << endl;
-	system("pause");
-	cout << "Exiting..." << endl;
+  if (failed_tests > 0)
+    cout << endl
+         << "You have " << failed_tests << " failed tests";
+  else
+    cout << endl
+         << "All tests passed! Good job!";
 
-	return 0;
+  cout << endl;
+  system("pause");
+  cout << "Exiting..." << endl;
+
+  return 0;
 }
 
-// bool test_default_ctor()
-// {
-// 	bool pass = true;
-// 	Node<int>* default_head = nullptr;
-// 	Node<int>* default_tail = nullptr;
+bool test_default_ctor() {
+  bool pass = true;
 
+  BST<int> tree_test{};
 
-// 	List<int> list_test;
+  // make sure there are no nodes in the tree
+  if (tree_test.GetRoot() != nullptr)
+    pass = false;
 
-// 	if (list_test.getHead() != default_head)
-// 		pass = false;
+  // make sure the height is 0
+  if (tree_test.Height() != 0)
+    pass = false;
 
-// 	if (list_test.getTail() != default_tail)
-// 		pass = false;
+  cout << "Default ctor test ";
 
-// 	cout << "Default ctor test ";
-
-// 	return pass;
-// }
+  return pass;
+}
 
 // bool test_param_ctor()
 // {
