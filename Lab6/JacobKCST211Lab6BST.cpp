@@ -24,14 +24,17 @@ const string NAMES[] = {"Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
                         "Oliver", "Tobey"};
 
 const int NUM_NAMES = 15;
+
+// random sequence of numbers to test
+const int NUMS[] = {63, 45, 15, 79, 64, 30, 19, 89, 3, 71};
 const int NUM_SIZE = 10;
-const int NUM_EXTRACT = 4;
+
+const int INORDER[] = {3, 15, 19, 30, 45, 63, 64, 71, 79, 89};
 
 // Test function declaration
 bool test_default_ctor();
-// bool test_param_ctor();
-// bool test_copy_ctor();
-// bool test_move_ctor();
+bool test_copy_ctor();
+bool test_move_ctor();
 // bool test_op_equal();
 // bool test_move_op_equal();
 // bool test_is_empty();
@@ -53,16 +56,20 @@ bool test_default_ctor();
 // bool test_insertb_no_match();
 
 // // Test functions for moves
-// List<int> ReturnIntList();
+BST<int> ReturnIntBST();
 // List<string> ReturnStrList();
 
+int call_counter(bool reset = false);
+void in_order_checker(int value);
+
 // Array of test functions
-FunctionPointer test_functions[] = {test_default_ctor /*, test_param_ctor, test_param_ctor,
-test_copy_ctor, test_move_ctor, test_op_equal, test_move_op_equal, test_is_empty,
-test_first_with_value, test_first_empty_list, test_last_with_value, test_last_empty_list,
-test_prepend, test_append, test_purge, test_extract_empty, test_extract_match,
-test_extract_no_match, test_inserta_empty, test_inserta_match, test_inserta_no_match,
-test_insertb_empty, test_insertb_match, test_insertb_no_match*/
+FunctionPointer test_functions[] = {
+    test_default_ctor,
+    test_copy_ctor, test_move_ctor /*, test_op_equal, test_move_op_equal, test_is_empty,
+     test_first_with_value, test_first_empty_list, test_last_with_value, test_last_empty_list,
+     test_prepend, test_append, test_purge, test_extract_empty, test_extract_match,
+     test_extract_no_match, test_inserta_empty, test_inserta_match, test_inserta_no_match,
+     test_insertb_empty, test_insertb_match, test_insertb_no_match*/
 };
 
 int main() {
@@ -115,62 +122,69 @@ bool test_default_ctor() {
   return pass;
 }
 
-// bool test_param_ctor()
-// {
-// 	bool pass = true;
-// 	List<int> test_list(12);
-// 	//test_list.Prepend(12);
-// 	int test_value = test_list.First();
+bool test_copy_ctor() {
+  bool pass = true;
 
-// 	pass = (test_value == 12);
+  BST<int> tree_test{};
+  for (int i = 0; i < NUM_SIZE; ++i)
+    tree_test.Insert(NUMS[i]);
 
-// 	cout << "Param ctor test ";
+  BST<int> tree_test2{tree_test};  // Copy ctor
 
-// 	return pass;
-// }
+  // check height
+  if (tree_test.Height() != tree_test2.Height())
+    pass = false;
 
-// bool test_copy_ctor()
-// {
-// 	bool pass = true;
+  // modify the original tree
+  tree_test.Insert(1);
 
-// 	List<int> test_list;
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 		test_list.Append(i);
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test2.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
 
-// 	List<int> list_test(test_list);
+  // remove the added node
+  tree_test.Delete(1);
+  // modify the copy
+  tree_test2.Insert(2);
 
-// 	// Check data integrity
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 	{
-// 		if (list_test.First() != test_list.First())
-// 			pass = false;
-// 		list_test.Extract(i); //Remove first value
-// 		test_list.Extract(i);
-// 	}
+  // make sure the original tree is not modified
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
 
-// 	cout << "Copy ctor test ";
+  cout << "Copy ctor test ";
 
-// 	return pass;
-// }
+  return pass;
+}
 
-// bool test_move_ctor()
-// {
-// 	bool pass = true;
+bool test_move_ctor() {
+  bool pass = true;
 
-// 	List<int> test_list(ReturnIntList());
+  BST<int> tree_test{ReturnIntBST()}; // Move ctor
 
-// 	// Check data integrity
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 	{
-// 		if (i != test_list.First())
-// 			pass = false;
-// 		test_list.Extract(i); // Remove value
-// 	}
+  //check height
+  if (tree_test.Height() != 4)
+    pass = false;
 
-// 	cout << "Move ctor test ";
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
 
-// 	return pass;
-// }
+  cout << "Move ctor test ";
+
+  return pass;
+}
 
 // bool test_op_equal()
 // {
@@ -607,3 +621,29 @@ bool test_default_ctor() {
 
 // 	return pass;
 // }
+
+// keep track of how many times this function is called
+// if reset is true, reset the counter to 0 for the next call i.e. return -1 when reset is true
+int call_counter(bool reset) {
+  static int counter = -1;
+
+  if (reset)
+    counter = -2;
+
+  counter++;
+  return counter;
+}
+
+// check the order of the nodes in the tree
+void in_order_checker(int num) {
+  if (num != INORDER[call_counter()])
+    throw Exception("InOrderCheker failed");
+}
+
+BST<int> ReturnIntBST() {
+  BST<int> tree;
+  for (int num : NUMS) {
+    tree.Insert(num);
+  }
+  return tree;
+}
