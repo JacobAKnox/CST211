@@ -25,8 +25,7 @@ class BST {
  public:
   BST();
   BST(const BST& copy);
-  BST(BST&& move)
-  noexcept;
+  BST(BST&& move) noexcept;
   ~BST();
 
   BST<T>& operator=(const BST& copy);
@@ -110,11 +109,11 @@ Node<T>* BST<T>::Insert(const T& data, Node<T>* root, int height) {
       this->height = height;
     // if root is nullptr, create a new node
     return new Node<T>(data);
-  } 
+  }
   if (data < root->Value()) {
     // if data is less than root, insert left
     root->left_ptr = Insert(data, root->Left(), height + 1);
-  }  
+  }
   if (data > root->Value()) {
     // if data is greater than root, insert right
     root->right_ptr = Insert(data, root->Right(), height + 1);
@@ -147,7 +146,7 @@ Node<T>* BST<T>::Delete(const T& data, Node<T>* root) {
   if (data < root->Value()) {
     // if data is less than root, delete left
     root->left_ptr = Delete(data, root->Left());
-  } 
+  }
   if (data > root->Value()) {
     // if data is greater than root, delete right
     root->right_ptr = Delete(data, root->Right());
