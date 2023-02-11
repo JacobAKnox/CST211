@@ -35,8 +35,8 @@ const int INORDER[] = {3, 15, 19, 30, 45, 63, 64, 71, 79, 89};
 bool test_default_ctor();
 bool test_copy_ctor();
 bool test_move_ctor();
-// bool test_op_equal();
-// bool test_move_op_equal();
+bool test_op_equal();
+bool test_move_op_equal();
 // bool test_is_empty();
 // bool test_first_with_value();
 // bool test_first_empty_list();
@@ -65,7 +65,7 @@ void in_order_checker(int value);
 // Array of test functions
 FunctionPointer test_functions[] = {
     test_default_ctor,
-    test_copy_ctor, test_move_ctor /*, test_op_equal, test_move_op_equal, test_is_empty,
+    test_copy_ctor, test_move_ctor, test_op_equal, test_move_op_equal /*, test_is_empty,
      test_first_with_value, test_first_empty_list, test_last_with_value, test_last_empty_list,
      test_prepend, test_append, test_purge, test_extract_empty, test_extract_match,
      test_extract_no_match, test_inserta_empty, test_inserta_match, test_inserta_no_match,
@@ -129,7 +129,7 @@ bool test_copy_ctor() {
   for (int i = 0; i < NUM_SIZE; ++i)
     tree_test.Insert(NUMS[i]);
 
-  BST<int> tree_test2{tree_test};  // Copy ctor
+  BST<int> tree_test2 = tree_test;  // Copy op
 
   // check height
   if (tree_test.Height() != tree_test2.Height())
@@ -167,9 +167,9 @@ bool test_copy_ctor() {
 bool test_move_ctor() {
   bool pass = true;
 
-  BST<int> tree_test{ReturnIntBST()}; // Move ctor
+  BST<int> tree_test = ReturnIntBST();  // Move op
 
-  //check height
+  // check height
   if (tree_test.Height() != 4)
     pass = false;
 
@@ -186,50 +186,21 @@ bool test_move_ctor() {
   return pass;
 }
 
-// bool test_op_equal()
-// {
-// 	bool pass = true;
+bool test_op_equal() {
+  bool pass = true;
 
-// 	List<int> test_list;
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 		test_list.Append(i);
+  cout << "Op equals test ";
 
-// 	List<int> list_test;
-// 	list_test = test_list; //Op =
+  return pass;
+}
 
-// 	// Check data integrity
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 	{
-// 		if (list_test.First() != test_list.First())
-// 			pass = false;
-// 		list_test.Extract(i); //Remove first value
-// 		test_list.Extract(i);
-// 	}
+bool test_move_op_equal() {
+  bool pass = true;
 
-// 	cout << "Op equals test ";
+  cout << "Move op equals test ";
 
-// 	return pass;
-// }
-
-// bool test_move_op_equal()
-// {
-// 	bool pass = true;
-
-// 	List<int> test_list;
-// 	test_list = ReturnIntList(); //Op =
-
-// 	// Check data integrity
-// 	for (int i = 0; i < NUM_SIZE; ++i)
-// 	{
-// 		if (i != test_list.First())
-// 			pass = false;
-// 		test_list.Extract(i); //Remove first value
-// 	}
-
-// 	cout << "Move op equals test ";
-
-// 	return pass;
-// }
+  return pass;
+}
 
 // bool test_is_empty()
 // {

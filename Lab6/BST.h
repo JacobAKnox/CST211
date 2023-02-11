@@ -84,7 +84,7 @@ BST<T>::BST(BST&& move) noexcept {
 template <typename T>
 BST<T>& BST<T>::operator=(const BST& copy) {
   this->height = copy.height;
-  this->root = copy.root;
+  this->root = CopyHelper(copy.root);
   return *this;
 }
 
@@ -92,7 +92,7 @@ BST<T>& BST<T>::operator=(const BST& copy) {
 template <typename T>
 BST<T>& BST<T>::operator=(BST&& move) noexcept {
   this->height = move.height;
-  this->root = move.root;
+  this->root = CopyHelper(move.root);
   return *this;
 }
 
