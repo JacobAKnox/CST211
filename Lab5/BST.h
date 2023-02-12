@@ -151,7 +151,7 @@ Node<T>* BST<T>::Delete(const T& data, Node<T>* root) {
     // if data is equal to root, delete the node
     Purge(root);
     delete root;
-    return nullptr;
+    return nullptr;//
   }
   if (data < root->Value()) {
     // if data is less than root, delete left

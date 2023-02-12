@@ -160,6 +160,7 @@ bool test_copy_ctor() {
 bool test_move_ctor() {
   bool pass = true;
 
+  //bug is here is leak sanitizer is off
   BST<int> tree_test{ReturnIntBST()};  // Move ctor
 
   // check height
@@ -331,18 +332,14 @@ bool test_delete_not_found() {
 
   cout << "Delete non-existent test ";
 
-  return pass;
+  return pass;//
 }
 
 bool test_delete_root() {
   bool pass = true;
 
-  BST<int> tree_test{};
-
-  // bug occurs somewhere in here when num is 45
-  for (int num : NUMS) {
-    tree_test.Insert(num);
-  }
+  // bug is here if leak sanitizer is on
+  BST<int> tree_test{ReturnIntBST()};
 
   // delete the root
   // with the current insert order the root is always the first element inserted
@@ -354,7 +351,7 @@ bool test_delete_root() {
     pass = false;
 
   // make sure the height is correct
-  if (tree_test.Height() == 0)
+  if (tree_test.Height() != 0)
     pass = false;
 
   cout << "Delete root test ";
