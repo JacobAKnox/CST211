@@ -53,6 +53,9 @@ bool test_delete();
 bool test_delete_not_found();
 bool test_delete_root();
 
+bool test_purge();
+bool test_empty_purge();
+
 // // Test functions for moves
 BST<int> ReturnIntBST();
 // List<string> ReturnStrList();
@@ -63,7 +66,8 @@ void in_order_checker(int value);
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
  test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
- test_insert_duplicate, test_delete, test_delete_not_found, test_delete_root};
+ test_insert_duplicate, test_delete, test_delete_not_found, 
+ test_delete_root, test_purge, test_empty_purge};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -353,6 +357,56 @@ bool test_delete_root() {
     pass = false;
 
   cout << "Delete root test ";
+
+  return pass;
+}
+
+bool test_purge() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // purge the tree
+  tree_test.Purge();
+
+  // make sure the tree is empty
+  for (int num : NUMS) {
+    if (tree_test.Contains(num)) {
+      pass = false;
+      break;
+    }
+  }
+
+  // make sure the height is correct
+  if (tree_test.Height() != 0)
+    pass = false;
+
+  cout << "Purge test ";
+
+  return pass;
+}
+
+bool test_empty_purge() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  // purge the empty tree
+  tree_test.Purge();
+
+  // make sure the tree is empty
+  for (int num : NUMS) {
+    if (tree_test.Contains(num)) {
+      pass = false;
+      break;
+    }
+  }
+
+  // make sure the height is correct
+  if (tree_test.Height() != 0)
+    pass = false;
+
+  cout << "Empty purge test ";
 
   return pass;
 }
