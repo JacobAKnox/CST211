@@ -31,29 +31,31 @@ class BST {
   void PostOrder(Vistor v, Node<T>* root) const;
   void BreadthFirst(Vistor v, Node<T>* root) const;
 
+  Node<T>* CopyHelper(Node<T>* root) const;
+  int Height(Node<T>* root) const;
+
  public:
-  BST();
-  BST(const BST& copy);
-  BST(BST&& move) noexcept;
+  // fractions are test counts
+  BST(); // 1/1
+  BST(const BST& copy); // 1/2
+  BST(BST&& move) noexcept; // 1/2
   ~BST();
 
-  BST<T>& operator=(const BST& copy);
-  BST<T>& operator=(BST&& move) noexcept;
+  BST<T>& operator=(const BST& copy); // 1/2
+  BST<T>& operator=(BST&& move) noexcept; // 1/2
 
-  void Insert(const T& data);
-  void Delete(const T& data);
-  void Purge();
-  int Height() const;
+  void Insert(const T& data); // 2/4
+  void Delete(const T& data); // 0/4
+  void Purge(); // 0/2
+  int Height() const; // 0/3
 
-  void InOrder(Vistor v) const;
-  void PreOrder(Vistor v) const;
-  void PostOrder(Vistor v) const;
-  void BreadthFirst(Vistor v) const;
+  void InOrder(Vistor v) const; // 0/1
+  void PreOrder(Vistor v) const; // 0/1
+  void PostOrder(Vistor v) const; // 0/1
+  void BreadthFirst(Vistor v) const; // 0/1 
 
   // not required
   Node<T>* GetRoot() const;
-  Node<T>* CopyHelper(Node<T>* root) const;
-  int depth(Node<T>* root) const;
 };
 
 // root just needs to be initialized to nullptr
