@@ -67,6 +67,8 @@ bool test_pre_order();
 bool test_post_order();
 bool test_breadth();
 
+bool test_contains();
+
 // // Test functions for moves
 BST<int> ReturnIntBST();
 // List<string> ReturnStrList();
@@ -79,10 +81,10 @@ void breadth_order_checker(int value);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
-                                    test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
-                                    test_insert_duplicate, test_delete, test_delete_not_found,
-                                    test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
-                                    test_in_order, test_pre_order, test_post_order, test_breadth};
+  test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
+  test_insert_duplicate, test_delete, test_delete_not_found,
+  test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
+  test_in_order, test_pre_order, test_post_order, test_breadth, test_contains};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -548,6 +550,24 @@ bool test_breadth() {
   }
 
   cout << "Breadth test ";
+
+  return pass;
+}
+
+bool test_contains() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // check if the tree contains the numbers
+  for (int num : NUMS) {
+    if (!tree_test.Contains(num)) {
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Contains test ";
 
   return pass;
 }
