@@ -22,19 +22,19 @@ class BST {
   typedef void (*Vistor)(T);
   int height;
 
-  Node<T>* Insert(const T& data, Node<T>* root, int height);
-  Node<T>* Delete(const T& data, Node<T>* root);
-  void Purge(Node<T>* root);
+  Node<T>* Insert(const T& data, Node<T>* node, int height);
+  Node<T>* Delete(const T& data, Node<T>* node);
+  void Purge(Node<T>* node);
 
-  void InOrder(Vistor v, Node<T>* root) const;
-  void PreOrder(Vistor v, Node<T>* root) const;
-  void PostOrder(Vistor v, Node<T>* root) const;
-  void BreadthFirst(Vistor v, Node<T>* root) const;
+  void InOrder(Vistor v, Node<T>* node) const;
+  void PreOrder(Vistor v, Node<T>* node) const;
+  void PostOrder(Vistor v, Node<T>* node) const;
+  void BreadthFirst(Vistor v, Node<T>* node) const;
 
-  Node<T>* CopyHelper(Node<T>* root) const;
-  int CalcHeight(Node<T>* root) const;
+  Node<T>* CopyHelper(Node<T>* node) const;
+  int CalcHeight(Node<T>* node) const;
 
-  bool Contains(const T& data, Node<T>* root) const;
+  bool Contains(const T& data, Node<T>* node) const;
 
  public:
   // fractions are test counts
@@ -141,7 +141,7 @@ void BST<T>::Delete(const T& data) {
 }
 
 template <typename T>
-Node<T>* BST<T>::Delete(const T& data, Node<T>* root) {
+Node<T>* BST<T>::Delete(const T& data, Node<T>* node) {
   if (node == nullptr) {
     // if node is null, throw exception
     // data was not found
