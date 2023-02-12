@@ -34,6 +34,9 @@ const int MAX_HEIGHT = 5;
 const int NUM_SIZE = 10;
 
 const int INORDER[] = {3, 15, 19, 30, 45, 63, 64, 71, 79, 89};
+const int PREORDER[] = {63, 45, 15, 3, 30, 19, 79, 64, 71, 89};
+const int POSTORDER[] = {3, 19, 30, 15, 45, 71, 64, 89, 79, 63};
+const int BREADTH[] = {63, 45, 79, 15, 64, 89, 3, 30, 71, 19};
 
 // Test function declaration
 bool test_default_ctor();
@@ -59,18 +62,27 @@ bool test_empty_purge();
 bool test_height();
 bool test_empty_height();
 
+bool test_in_order();
+bool test_pre_order();
+bool test_post_order();
+bool test_breadth();
+
 // // Test functions for moves
 BST<int> ReturnIntBST();
 // List<string> ReturnStrList();
 
 int call_counter(bool reset = false);
 void in_order_checker(int value);
+void pre_order_checker(int value);
+void post_order_checker(int value);
+void breadth_order_checker(int value);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
- test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
- test_insert_duplicate, test_delete, test_delete_not_found, 
- test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height};
+                                    test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
+                                    test_insert_duplicate, test_delete, test_delete_not_found,
+                                    test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
+                                    test_in_order, test_pre_order, test_post_order, test_breadth};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -285,11 +297,11 @@ bool test_insert_duplicate() {
 
   tree_test.Insert(1);
 
-  //insert 1 again
+  // insert 1 again
   try {
     tree_test.Insert(1);
     pass = false;
-  } catch (Exception &e) { 
+  } catch (Exception &e) {
     // make sure an exception is thrown
   }
 
@@ -332,20 +344,20 @@ bool test_delete_not_found() {
   try {
     tree_test.Delete(1);
     pass = false;
-  } catch (Exception &e) { 
+  } catch (Exception &e) {
     // make sure an exception is thrown
   }
 
   cout << "Delete non-existent test ";
 
-  return pass;//
+  return pass;  //
 }
 
 bool test_delete_root() {
   bool pass = true;
 
   BST<int> tree_test{ReturnIntBST()};
-  
+
   // delete the root
   // with the current insert order the root is always the first element inserted
   // the tree should be empty after this and no memory leaks
@@ -423,15 +435,15 @@ bool test_height() {
     pass = false;
 
   try {
-  // insert the numbers in the array
-  for (int i = 0; i < NUM_SIZE; ++i) {
-    tree_test.Insert(NUMS[i]);
-    if (tree_test.Height() != HEIGHTS[i]) {
-      // make sure the height is correct for each insertion
-      pass = false;
-      break;
+    // insert the numbers in the array
+    for (int i = 0; i < NUM_SIZE; ++i) {
+      tree_test.Insert(NUMS[i]);
+      if (tree_test.Height() != HEIGHTS[i]) {
+        // make sure the height is correct for each insertion
+        pass = false;
+        break;
+      }
     }
-  }
   } catch (Exception &e) {
     pass = false;
   }
@@ -439,7 +451,7 @@ bool test_height() {
   // make sure the height is correct
   if (tree_test.Height() != MAX_HEIGHT)
     pass = false;
-  
+
   for (int i = 0; i < NUM_SIZE; ++i) {
     tree_test.Delete(DELETE_ORDER[i]);
     if (tree_test.Height() != DELETE_HEIGHTS[i]) {
@@ -468,6 +480,78 @@ bool test_empty_height() {
   return pass;
 }
 
+bool test_in_order() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "InOrder test ";
+
+  return pass;
+}
+
+bool test_pre_order() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.PreOrder(pre_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "PreOrder test ";
+
+  return pass;
+}
+
+bool test_post_order() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.PostOrder(post_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "PostOrder test ";
+
+  return pass;
+}
+
+bool test_breadth() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.BreadthFirst(breadth_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Breadth test ";
+
+  return pass;
+}
+
 // keep track of how many times this function is called
 // if reset is true, reset the counter to 0 for the next call i.e. return -1 when reset is true
 int call_counter(bool reset) {
@@ -486,6 +570,22 @@ void in_order_checker(int num) {
     throw Exception("InOrderCheker failed");
 }
 
+void pre_order_checker(int num) {
+  if (num != PREORDER[call_counter()])
+    throw Exception("PreOrderCheker failed");
+}
+
+void post_order_checker(int num) {
+  if (num != POSTORDER[call_counter()])
+    throw Exception("PostOrderCheker failed");
+}
+
+void breadth_order_checker(int num) {
+  if (num != BREADTH[call_counter()])
+    throw Exception("LevelOrderCheker failed");
+}
+
+// return a BST with the numbers in NUMS
 BST<int> ReturnIntBST() {
   BST<int> tree{};
   for (int num : NUMS) {

@@ -29,7 +29,7 @@ class BST {
   void InOrder(Vistor v, Node<T>* node) const;
   void PreOrder(Vistor v, Node<T>* node) const;
   void PostOrder(Vistor v, Node<T>* node) const;
-  void BreadthFirst(Vistor v, Node<T>* node) const;
+  void BreadthFirst(Vistor v, Node<T>* node, int level) const;
 
   Node<T>* CopyHelper(Node<T>* node) const;
   int CalcHeight(Node<T>* node) const;
@@ -49,16 +49,16 @@ class BST {
   void Insert(const T& data); // 2/4
   void Delete(const T& data); // 3/5
   void Purge(); // 2/2
-  int Height() const; // 0/3
+  int Height() const; // 2/3
 
-  void InOrder(Vistor v) const; // 0/1
-  void PreOrder(Vistor v) const; // 0/1
-  void PostOrder(Vistor v) const; // 0/1
-  void BreadthFirst(Vistor v) const; // 0/1 
+  void InOrder(Vistor v) const; // 1/1
+  void PreOrder(Vistor v) const; // 1/1
+  void PostOrder(Vistor v) const; // 1/1
+  void BreadthFirst(Vistor v) const; // 1/1 
 
   // not required
-  Node<T>* GetRoot() const;
-  bool Contains(const T& data) const;
+  Node<T>* GetRoot() const; // 0/0
+  bool Contains(const T& data) const; // 0/1
 };
 
 // root just needs to be initialized to nullptr
@@ -193,6 +193,62 @@ void BST<T>::InOrder(Vistor v, Node<T>* node) const {
     InOrder(v, node->Left());
     v(node->Value());
     InOrder(v, node->Right());
+  }
+}
+
+template <typename T>
+void BST<T>::PreOrder(Vistor v) const {
+  // call PreOrder with the root pointer
+  PreOrder(v, root);
+}
+
+template <typename T>
+void BST<T>::PreOrder(Vistor v, Node<T>* node) const {
+  if (node != nullptr) {
+    // if node is not null, visit the node, left, and right
+    v(node->Value());
+    PreOrder(v, node->Left());
+    PreOrder(v, node->Right());
+  }
+}
+
+template <typename T>
+void BST<T>::PostOrder(Vistor v) const {
+  // call PostOrder with the root pointer
+  PostOrder(v, root);
+}
+
+template <typename T>
+void BST<T>::PostOrder(Vistor v, Node<T>* node) const {
+  if (node != nullptr) {
+    // if node is not null, visit the left, right, and node
+    PostOrder(v, node->Left());
+    PostOrder(v, node->Right());
+    v(node->Value());
+  }
+}
+
+template <typename T>
+void BST<T>::BreadthFirst(Vistor v) const {
+  for (int i = 1; i <= height; i++) {
+    // for each level, call BreadthFirst with the root pointer
+    BreadthFirst(v, root, i);
+  }
+}
+
+template <typename T>
+void BST<T>::BreadthFirst(Vistor v, Node<T>* node, int level) const {
+  if (node == nullptr) {
+    // if node is null, return
+    return;
+  }
+  if (level == 1) {
+    // if level is 1, visit the node
+    v(node->Value());
+  } else if (level > 1) {
+    // if level is greater than 1, visit the left and right
+    BreadthFirst(v, node->Left(), level - 1);
+    BreadthFirst(v, node->Right(), level - 1);
   }
 }
 
