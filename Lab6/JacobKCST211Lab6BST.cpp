@@ -27,6 +27,8 @@ const int NUM_NAMES = 15;
 
 // random sequence of numbers to test
 const int NUMS[] = {63, 45, 15, 79, 64, 30, 19, 89, 3, 71};
+const int HEIGHTS[] = {1, 2, 3, 3, 3, 4, 5, 5, 5, 5};
+const int MAX_HEIGHT = 5;
 const int NUM_SIZE = 10;
 
 const int INORDER[] = {3, 15, 19, 30, 45, 63, 64, 71, 79, 89};
@@ -37,6 +39,8 @@ bool test_copy_ctor();
 bool test_move_ctor();
 bool test_op_equal();
 bool test_move_op_equal();
+bool test_insert();
+bool test_insert_duplicate();
 
 // // Test functions for moves
 BST<int> ReturnIntBST();
@@ -47,7 +51,7 @@ void in_order_checker(int value);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
- test_move_ctor, test_op_equal, test_move_op_equal};
+ test_move_ctor, test_op_equal, test_move_op_equal, test_insert, test_insert_duplicate};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -147,7 +151,7 @@ bool test_move_ctor() {
   BST<int> tree_test{ReturnIntBST()};  // Move ctor
 
   // check height
-  if (tree_test.Height() != 4)
+  if (tree_test.Height() != MAX_HEIGHT)
     pass = false;
 
   // Check data integrity
@@ -211,7 +215,7 @@ bool test_move_op_equal() {
   BST<int> tree_test = ReturnIntBST();  // Move op
 
   // check height
-  if (tree_test.Height() != 4)
+  if (tree_test.Height() != MAX_HEIGHT)
     pass = false;
 
   // Check data integrity
@@ -223,6 +227,54 @@ bool test_move_op_equal() {
   }
 
   cout << "Move op equals test ";
+
+  return pass;
+}
+
+bool test_insert() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  // insert the numbers in the array
+  for (int i = 0; i < NUM_SIZE; ++i) {
+    tree_test.Insert(NUMS[i]);
+    if (tree_test.Height() != HEIGHTS[i]) {
+      // make sure the height is correct for each insertion
+      pass = false;
+      break;
+    }
+  }
+
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Insert test ";
+
+  return pass;
+}
+
+bool test_insert_duplicate() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  tree_test.Insert(1);
+
+  //insert 1 again
+  try {
+    tree_test.Insert(1);
+    pass = false;
+  } catch (Exception &e) { 
+    // make sure an exception is thrown
+  }
+
+  cout << "Insert duplicate test ";
 
   return pass;
 }

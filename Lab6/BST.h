@@ -100,7 +100,7 @@ BST<T>& BST<T>::operator=(BST&& move) noexcept {
 template <typename T>
 void BST<T>::Insert(const T& data) {
   // call Insert with the root pointer
-  root = Insert(data, root, 0);
+  root = Insert(data, root, 1);
 }
 
 template <typename T>
