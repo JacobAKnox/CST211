@@ -27,7 +27,9 @@ const int NUM_NAMES = 15;
 
 // random sequence of numbers to test
 const int NUMS[] = {63, 45, 15, 79, 64, 30, 19, 89, 3, 71};
+const int DELETE_ORDER[] = {19, 3, 30, 15, 45, 71, 64, 89, 79, 63};
 const int HEIGHTS[] = {1, 2, 3, 3, 3, 4, 5, 5, 5, 5};
+const int DELETE_HEIGHTS[] = {4, 4, 4, 4, 4, 3, 3, 2, 1, 0};
 const int MAX_HEIGHT = 5;
 const int NUM_SIZE = 10;
 
@@ -35,12 +37,21 @@ const int INORDER[] = {3, 15, 19, 30, 45, 63, 64, 71, 79, 89};
 
 // Test function declaration
 bool test_default_ctor();
+
 bool test_copy_ctor();
+
 bool test_move_ctor();
+
 bool test_op_equal();
+
 bool test_move_op_equal();
+
 bool test_insert();
 bool test_insert_duplicate();
+
+bool test_delete();
+bool test_delete_not_found();
+bool test_delete_root();
 
 // // Test functions for moves
 BST<int> ReturnIntBST();
@@ -51,7 +62,8 @@ void in_order_checker(int value);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
- test_move_ctor, test_op_equal, test_move_op_equal, test_insert, test_insert_duplicate};
+ test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
+ test_insert_duplicate, test_delete, test_delete_not_found, test_delete_root};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -107,8 +119,8 @@ bool test_copy_ctor() {
   bool pass = true;
 
   BST<int> tree_test{};
-  for (int i = 0; i < NUM_SIZE; ++i)
-    tree_test.Insert(NUMS[i]);
+  for (int num : NUMS)
+    tree_test.Insert(num);
 
   BST<int> tree_test2{tree_test};  // Copy ctor
 
@@ -279,6 +291,72 @@ bool test_insert_duplicate() {
   return pass;
 }
 
+bool test_delete() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // delete the numbers in the array
+  for (int i = 0; i < NUM_SIZE; ++i) {
+    tree_test.Delete(DELETE_ORDER[i]);
+    if (tree_test.Height() != DELETE_HEIGHTS[i]) {
+      // make sure the height is correct for each deletion
+      pass = false;
+      break;
+    }
+    if (tree_test.Contains(DELETE_ORDER[i])) {
+      // make sure the node is deleted
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Delete test ";
+
+  return pass;
+}
+
+bool test_delete_not_found() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  // delete a non-existent node
+  try {
+    tree_test.Delete(1);
+    pass = false;
+  } catch (Exception &e) { 
+    // make sure an exception is thrown
+  }
+
+  cout << "Delete non-existent test ";
+
+  return pass;
+}
+
+bool test_delete_root() {
+  bool pass = true;
+
+  BST<int> tree_test{ReturnIntBST()};
+
+  // delete the root
+  // with the current insert order the root is always the first element inserted
+  // the tree should be empty after this and no memory leaks
+  tree_test.Delete(NUMS[0]);
+
+  // make sure the root is deleted
+  if (tree_test.Contains(NUMS[0]))
+    pass = false;
+
+  // make sure the height is correct
+  if (tree_test.Height() == 0)
+    pass = false;
+
+  cout << "Delete root test ";
+
+  return pass;
+}
+
 // keep track of how many times this function is called
 // if reset is true, reset the counter to 0 for the next call i.e. return -1 when reset is true
 int call_counter(bool reset) {
@@ -298,7 +376,7 @@ void in_order_checker(int num) {
 }
 
 BST<int> ReturnIntBST() {
-  BST<int> tree;
+  BST<int> tree{};
   for (int num : NUMS) {
     tree.Insert(num);
   }

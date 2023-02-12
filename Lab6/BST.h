@@ -32,7 +32,9 @@ class BST {
   void BreadthFirst(Vistor v, Node<T>* root) const;
 
   Node<T>* CopyHelper(Node<T>* root) const;
-  int Height(Node<T>* root) const;
+  int CalcHeight(Node<T>* root) const;
+
+  bool Contains(const T& data, Node<T>* root) const;
 
  public:
   // fractions are test counts
@@ -45,7 +47,7 @@ class BST {
   BST<T>& operator=(BST&& move) noexcept; // 1/2
 
   void Insert(const T& data); // 2/4
-  void Delete(const T& data); // 0/4
+  void Delete(const T& data); // 3/5
   void Purge(); // 0/2
   int Height() const; // 0/3
 
@@ -56,6 +58,7 @@ class BST {
 
   // not required
   Node<T>* GetRoot() const;
+  bool Contains(const T& data) const;
 };
 
 // root just needs to be initialized to nullptr
@@ -112,7 +115,7 @@ Node<T>* BST<T>::Insert(const T& data, Node<T>* root, int height) {
     if (height > this->height)
       this->height = height;
     // if root is nullptr, create a new node
-    return new Node<T>(data);
+    return new Node<T>{data};
   }
   if (data < root->Value()) {
     // if data is less than root, insert left
@@ -133,6 +136,7 @@ template <typename T>
 void BST<T>::Delete(const T& data) {
   // call Delete with the root pointer
   root = Delete(data, root);
+  height = CalcHeight(root);
 }
 
 template <typename T>
@@ -144,6 +148,7 @@ Node<T>* BST<T>::Delete(const T& data, Node<T>* root) {
   }
   if (data == root->Value()) {
     // if data is equal to root, delete the node
+    Purge(root);
     delete root;
     return nullptr;
   }
@@ -162,6 +167,7 @@ template <typename T>
 void BST<T>::Purge() {
   // call Purge with the root pointer
   Purge(root);
+  height = 0;
 }
 
 template <typename T>
@@ -197,6 +203,16 @@ int BST<T>::Height() const {
 }
 
 template <typename T>
+int BST<T>::CalcHeight(Node<T>* root) const {
+  if (root == nullptr) {
+    // if root is null, return 0
+    return 0;
+  }
+  // return the max of the left and right heights + 1
+  return std::max(CalcHeight(root->Left()), CalcHeight(root->Right())) + 1;
+}
+
+template <typename T>
 Node<T>* BST<T>::GetRoot() const {  //
   // return the root pointer
   return root;
@@ -214,6 +230,33 @@ Node<T>* BST<T>::CopyHelper(Node<T>* root) const {
   new_node->left_ptr = CopyHelper(root->Left());
   new_node->right_ptr = CopyHelper(root->Right());
   return new_node;
+}
+
+template <typename T>
+bool BST<T>::Contains(const T& data) const {
+  // call Contains with the root pointer
+  return Contains(data, root);
+}
+
+template <typename T>
+bool BST<T>::Contains(const T& data, Node<T>* root) const {
+  if (root == nullptr) {
+    // if root is null, return false
+    return false;
+  }
+  if (data == root->Value()) {
+    // if data is equal to root, return true
+    return true;
+  }
+  if (data < root->Value()) {
+    // if data is less than root, check left
+    return Contains(data, root->Left());
+  }
+  if (data > root->Value()) {
+    // if data is greater than root, check right
+    return Contains(data, root->Right());
+  }
+  return false;
 }
 
 #endif  // BST_TEMPLATE_H
