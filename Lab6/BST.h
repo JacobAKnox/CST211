@@ -22,6 +22,15 @@ class BST {
   typedef void (*Vistor)(T);
   int height;
 
+  Node<T>* Insert(const T& data, Node<T>* root, int height);
+  Node<T>* Delete(const T& data, Node<T>* root);
+  void Purge(Node<T>* root);
+
+  void InOrder(Vistor v, Node<T>* root) const;
+  void PreOrder(Vistor v, Node<T>* root) const;
+  void PostOrder(Vistor v, Node<T>* root) const;
+  void BreadthFirst(Vistor v, Node<T>* root) const;
+
  public:
   BST();
   BST(const BST& copy);
@@ -32,21 +41,14 @@ class BST {
   BST<T>& operator=(BST&& move) noexcept;
 
   void Insert(const T& data);
-  Node<T>* Insert(const T& data, Node<T>* root, int height);
   void Delete(const T& data);
-  Node<T>* Delete(const T& data, Node<T>* root);
   void Purge();
-  void Purge(Node<T>* root);
   int Height() const;
 
   void InOrder(Vistor v) const;
-  void InOrder(Vistor v, Node<T>* root) const;
   void PreOrder(Vistor v) const;
-  void PreOrder(Vistor v, Node<T>* root) const;
   void PostOrder(Vistor v) const;
-  void PostOrder(Vistor v, Node<T>* root) const;
   void BreadthFirst(Vistor v) const;
-  void BreadthFirst(Vistor v, Node<T>* root) const;
 
   // not required
   Node<T>* GetRoot() const;
