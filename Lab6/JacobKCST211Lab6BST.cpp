@@ -106,7 +106,7 @@ bool test_copy_ctor() {
   for (int i = 0; i < NUM_SIZE; ++i)
     tree_test.Insert(NUMS[i]);
 
-  BST<int> tree_test2 = tree_test;  // Copy op
+  BST<int> tree_test2{tree_test};  // Copy ctor
 
   // check height
   if (tree_test.Height() != tree_test2.Height())
@@ -144,7 +144,7 @@ bool test_copy_ctor() {
 bool test_move_ctor() {
   bool pass = true;
 
-  BST<int> tree_test = ReturnIntBST();  // Move op
+  BST<int> tree_test{ReturnIntBST()};  // Move ctor
 
   // check height
   if (tree_test.Height() != 4)
@@ -166,13 +166,61 @@ bool test_move_ctor() {
 bool test_op_equal() {
   bool pass = true;
 
-  cout << "Op equals test ";
+  BST<int> tree_test{};
+  for (int i = 0; i < NUM_SIZE; ++i)
+    tree_test.Insert(NUMS[i]);
+
+  BST<int> tree_test2 = tree_test;  // Copy op
+
+  // check height
+  if (tree_test.Height() != tree_test2.Height())
+    pass = false;
+
+  // modify the original tree
+  tree_test.Insert(1);
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test2.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  // remove the added node
+  tree_test.Delete(1);
+  // modify the copy
+  tree_test2.Insert(2);
+
+  // make sure the original tree is not modified
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Copy op equals test ";
 
   return pass;
 }
 
 bool test_move_op_equal() {
   bool pass = true;
+
+  BST<int> tree_test = ReturnIntBST();  // Move op
+
+  // check height
+  if (tree_test.Height() != 4)
+    pass = false;
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test.InOrder(in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
 
   cout << "Move op equals test ";
 
