@@ -109,28 +109,28 @@ void BST<T>::Insert(const T& data) {
 }
 
 template <typename T>
-Node<T>* BST<T>::Insert(const T& data, Node<T>* root, int height) {
-  if (root == nullptr) {
+Node<T>* BST<T>::Insert(const T& data, Node<T>* node, int height) {
+  if (node == nullptr) {
     // if height is greater than the current height, set the height
     if (height > this->height)
       this->height = height;
-    // if root is nullptr, create a new node
-    // this allocates to the same address roots parent, and causes and infite poiter loop
+    // if node is nullptr, create a new node
+    // this allocates to the same address nodes parent, and causes and infite poiter loop
     return new Node<T>{data};
   }
-  if (data < root->Value()) {
-    // if data is less than root, insert left
-    root->left_ptr = Insert(data, root->Left(), height + 1);
+  if (data < node->Value()) {
+    // if data is less than node, insert left
+    node->left_ptr = Insert(data, node->Left(), height + 1);
   }
-  if (data > root->Value()) {
-    // if data is greater than root, insert right
-    root->right_ptr = Insert(data, root->Right(), height + 1);
+  if (data > node->Value()) {
+    // if data is greater than node, insert right
+    node->right_ptr = Insert(data, node->Right(), height + 1);
   }
-  if (data == root->Value()) {
-    // if data is equal to root, throw exception
+  if (data == node->Value()) {
+    // if data is equal to node, throw exception
     throw Exception("Duplicate value");
   }
-  return root;
+  return node;
 }
 
 template <typename T>
@@ -142,26 +142,26 @@ void BST<T>::Delete(const T& data) {
 
 template <typename T>
 Node<T>* BST<T>::Delete(const T& data, Node<T>* root) {
-  if (root == nullptr) {
-    // if root is null, throw exception
+  if (node == nullptr) {
+    // if node is null, throw exception
     // data was not found
     throw Exception("Value not found");
   }
-  if (data == root->Value()) {
-    // if data is equal to root, delete the node
-    Purge(root);
-    delete root;
+  if (data == node->Value()) {
+    // if data is equal to node, delete the node
+    Purge(node);
+    delete node;
     return nullptr;//
   }
-  if (data < root->Value()) {
-    // if data is less than root, delete left
-    root->left_ptr = Delete(data, root->Left());
+  if (data < node->Value()) {
+    // if data is less than node, delete left
+    node->left_ptr = Delete(data, node->Left());
   }
-  if (data > root->Value()) {
-    // if data is greater than root, delete right
-    root->right_ptr = Delete(data, root->Right());
+  if (data > node->Value()) {
+    // if data is greater than node, delete right
+    node->right_ptr = Delete(data, node->Right());
   }
-  return root;
+  return node;
 }
 
 template <typename T>
@@ -172,13 +172,13 @@ void BST<T>::Purge() {
 }
 
 template <typename T>
-void BST<T>::Purge(Node<T>* root) {
-  if (root != nullptr) {
-    // if root is not null, purge the left and right
-    Purge(root->Left());
-    Purge(root->Right());
-    delete root;
-    root = nullptr;
+void BST<T>::Purge(Node<T>* node) {
+  if (node != nullptr) {
+    // if node is not null, purge the left and right
+    Purge(node->Left());
+    Purge(node->Right());
+    delete node;
+    node = nullptr;
   }
 }
 
@@ -189,12 +189,12 @@ void BST<T>::InOrder(Vistor v) const {
 }
 
 template <typename T>
-void BST<T>::InOrder(Vistor v, Node<T>* root) const {
-  if (root != nullptr) {
-    // if root is not null, visit the left, root, and right
-    InOrder(v, root->Left());
-    v(root->Value());
-    InOrder(v, root->Right());
+void BST<T>::InOrder(Vistor v, Node<T>* node) const {
+  if (node != nullptr) {
+    // if node is not null, visit the left, node, and right
+    InOrder(v, node->Left());
+    v(node->Value());
+    InOrder(v, node->Right());
   }
 }
 
@@ -204,13 +204,13 @@ int BST<T>::Height() const {
 }
 
 template <typename T>
-int BST<T>::CalcHeight(Node<T>* root) const {
-  if (root == nullptr) {
-    // if root is null, return 0
+int BST<T>::CalcHeight(Node<T>* node) const {
+  if (node == nullptr) {
+    // if node is null, return 0
     return 0;
   }
   // return the max of the left and right heights + 1
-  return std::max(CalcHeight(root->Left()), CalcHeight(root->Right())) + 1;
+  return std::max(CalcHeight(node->Left()), CalcHeight(node->Right())) + 1;
 }
 
 template <typename T>
@@ -220,16 +220,16 @@ Node<T>* BST<T>::GetRoot() const {  //
 }
 
 template <typename T>
-Node<T>* BST<T>::CopyHelper(Node<T>* root) const {
-  if (root == nullptr) {
-    // if root is null, return null
+Node<T>* BST<T>::CopyHelper(Node<T>* node) const {
+  if (node == nullptr) {
+    // if node is null, return null
     return nullptr;
   }
-  // create a new node with the root value
-  Node<T>* new_node = new Node<T>(root->Value());
+  // create a new node with the node value
+  Node<T>* new_node = new Node<T>(node->Value());
   // set the left and right to the copy of the left and right
-  new_node->left_ptr = CopyHelper(root->Left());
-  new_node->right_ptr = CopyHelper(root->Right());
+  new_node->left_ptr = CopyHelper(node->Left());
+  new_node->right_ptr = CopyHelper(node->Right());
   return new_node;
 }
 
@@ -240,22 +240,22 @@ bool BST<T>::Contains(const T& data) const {
 }
 
 template <typename T>
-bool BST<T>::Contains(const T& data, Node<T>* root) const {
-  if (root == nullptr) {
-    // if root is null, return false
+bool BST<T>::Contains(const T& data, Node<T>* node) const {
+  if (node == nullptr) {
+    // if node is null, return false
     return false;
   }
-  if (data == root->Value()) {
-    // if data is equal to root, return true
+  if (data == node->Value()) {
+    // if data is equal to node, return true
     return true;
   }
-  if (data < root->Value()) {
-    // if data is less than root, check left
-    return Contains(data, root->Left());
+  if (data < node->Value()) {
+    // if data is less than node, check left
+    return Contains(data, node->Left());
   }
-  if (data > root->Value()) {
-    // if data is greater than root, check right
-    return Contains(data, root->Right());
+  if (data > node->Value()) {
+    // if data is greater than node, check right
+    return Contains(data, node->Right());
   }
   return false;
 }
