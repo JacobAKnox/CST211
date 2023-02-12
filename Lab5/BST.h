@@ -115,7 +115,6 @@ Node<T>* BST<T>::Insert(const T& data, Node<T>* node, int height) {
     if (height > this->height)
       this->height = height;
     // if node is nullptr, create a new node
-    // this allocates to the same address nodes parent, and causes and infite poiter loop
     return new Node<T>{data};
   }
   if (data < node->Value()) {
@@ -135,7 +134,7 @@ Node<T>* BST<T>::Insert(const T& data, Node<T>* node, int height) {
 
 template <typename T>
 void BST<T>::Delete(const T& data) {
-  // call Delete with the root pointer
+  // // call Delete with the root pointer
   root = Delete(data, root);
   height = CalcHeight(root);
 }
@@ -150,8 +149,7 @@ Node<T>* BST<T>::Delete(const T& data, Node<T>* node) {
   if (data == node->Value()) {
     // if data is equal to node, delete the node
     Purge(node);
-    delete node;
-    return nullptr;//
+    return nullptr;
   }
   if (data < node->Value()) {
     // if data is less than node, delete left

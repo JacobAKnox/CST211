@@ -160,7 +160,6 @@ bool test_copy_ctor() {
 bool test_move_ctor() {
   bool pass = true;
 
-  //bug is here is leak sanitizer is off
   BST<int> tree_test{ReturnIntBST()};  // Move ctor
 
   // check height
@@ -338,9 +337,8 @@ bool test_delete_not_found() {
 bool test_delete_root() {
   bool pass = true;
 
-  // bug is here if leak sanitizer is on
   BST<int> tree_test{ReturnIntBST()};
-
+  
   // delete the root
   // with the current insert order the root is always the first element inserted
   // the tree should be empty after this and no memory leaks
