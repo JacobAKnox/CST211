@@ -56,7 +56,6 @@ Node<T>::Node(const T data)
 template <typename T>
 Node<T>::~Node() {
   // destructor
-  this->n_data = T{};
   this->left_ptr = nullptr;
   this->right_ptr = nullptr;
 }

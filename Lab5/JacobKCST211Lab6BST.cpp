@@ -56,6 +56,9 @@ bool test_delete_root();
 bool test_purge();
 bool test_empty_purge();
 
+bool test_height();
+bool test_empty_height();
+
 // // Test functions for moves
 BST<int> ReturnIntBST();
 // List<string> ReturnStrList();
@@ -67,7 +70,7 @@ void in_order_checker(int value);
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
  test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
  test_insert_duplicate, test_delete, test_delete_not_found, 
- test_delete_root, test_purge, test_empty_purge};
+ test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -407,6 +410,60 @@ bool test_empty_purge() {
     pass = false;
 
   cout << "Empty purge test ";
+
+  return pass;
+}
+
+bool test_height() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  if (tree_test.Height() != 0)
+    pass = false;
+
+  try {
+  // insert the numbers in the array
+  for (int i = 0; i < NUM_SIZE; ++i) {
+    tree_test.Insert(NUMS[i]);
+    if (tree_test.Height() != HEIGHTS[i]) {
+      // make sure the height is correct for each insertion
+      pass = false;
+      break;
+    }
+  }
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  // make sure the height is correct
+  if (tree_test.Height() != MAX_HEIGHT)
+    pass = false;
+  
+  for (int i = 0; i < NUM_SIZE; ++i) {
+    tree_test.Delete(DELETE_ORDER[i]);
+    if (tree_test.Height() != DELETE_HEIGHTS[i]) {
+      // make sure the height is correct for each deletion
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Height test ";
+
+  return pass;
+}
+
+bool test_empty_height() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  // make sure the height is correct
+  if (tree_test.Height() != 0)
+    pass = false;
+
+  cout << "Empty height test ";
 
   return pass;
 }

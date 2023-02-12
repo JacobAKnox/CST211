@@ -48,7 +48,7 @@ class BST {
 
   void Insert(const T& data); // 2/4
   void Delete(const T& data); // 3/5
-  void Purge(); // 0/2
+  void Purge(); // 2/2
   int Height() const; // 0/3
 
   void InOrder(Vistor v) const; // 0/1
@@ -166,6 +166,7 @@ template <typename T>
 void BST<T>::Purge() {
   // call Purge with the root pointer
   Purge(root);
+  root = nullptr;
   height = 0;
 }
 
@@ -173,10 +174,9 @@ template <typename T>
 void BST<T>::Purge(Node<T>* node) {
   if (node != nullptr) {
     // if node is not null, purge the left and right
-    Purge(node->Left());
-    Purge(node->Right());
+    Purge(node->left_ptr);
+    Purge(node->right_ptr);
     delete node;
-    node = nullptr;
   }
 }
 
