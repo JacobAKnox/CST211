@@ -337,7 +337,12 @@ bool test_delete_not_found() {
 bool test_delete_root() {
   bool pass = true;
 
-  BST<int> tree_test{ReturnIntBST()};
+  BST<int> tree_test{};
+
+  // bug occurs somewhere in here when num is 45
+  for (int num : NUMS) {
+    tree_test.Insert(num);
+  }
 
   // delete the root
   // with the current insert order the root is always the first element inserted

@@ -115,6 +115,7 @@ Node<T>* BST<T>::Insert(const T& data, Node<T>* root, int height) {
     if (height > this->height)
       this->height = height;
     // if root is nullptr, create a new node
+    // this allocates to the same address roots parent, and causes and infite poiter loop
     return new Node<T>{data};
   }
   if (data < root->Value()) {
