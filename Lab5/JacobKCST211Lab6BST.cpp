@@ -23,6 +23,16 @@ const string NAMES[] = {"Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
                         "Kate", "Terry", "Ann", "Elaine", "Stephanie", "Wanda", "Oscar",
                         "Oliver", "Tobey"};
 
+const string DELETE_NAMES[] = {"Kate", "Tobey", "Ann", "Elaine", "Kian", "Oliver", "Stephanie",
+                               "Wanda", "Alex", "Josh", "Oscar", "Terry", "Brit", "Seth", "Kyle"};
+
+const string INORDER_NAMES[] = {"Alex", "Ann", "Brit", "Elaine", "Josh", "Kate", "Kian",
+                                "Kyle", "Oliver", "Oscar", "Seth", "Stephanie", "Terry",
+                                "Tobey", "Wanda"};
+
+const int NAME_HEIGHTS[] = {1, 2, 2, 3, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5};
+const int DELETE_NAME_HEIGHTS[] = {5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 1, 0};
+const int NAME_MAX_HEIGHT = 5;
 const int NUM_NAMES = 15;
 
 // random sequence of numbers to test
@@ -42,8 +52,10 @@ const int BREADTH[] = {63, 45, 79, 15, 64, 89, 3, 30, 71, 19};
 bool test_default_ctor();
 
 bool test_copy_ctor();
+bool test_complex_copy_ctor();
 
 bool test_move_ctor();
+bool test_complex_move_ctor();
 
 bool test_op_equal();
 
@@ -71,7 +83,7 @@ bool test_contains();
 
 // // Test functions for moves
 BST<int> ReturnIntBST();
-// List<string> ReturnStrList();
+BST<string> ReturnStrBST();
 
 int call_counter(bool reset = false);
 void in_order_checker(int value);
@@ -79,12 +91,15 @@ void pre_order_checker(int value);
 void post_order_checker(int value);
 void breadth_order_checker(int value);
 
+void name_in_order_checker(string value);
+
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
   test_insert_duplicate, test_delete, test_delete_not_found,
   test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
-  test_in_order, test_pre_order, test_post_order, test_breadth, test_contains};
+  test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
+  test_complex_copy_ctor, test_complex_move_ctor};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -178,6 +193,48 @@ bool test_copy_ctor() {
   return pass;
 }
 
+bool test_complex_copy_ctor() {
+  bool pass = true;
+
+  BST<string> tree_test{}; 
+  for (string name: NAMES)
+    tree_test.Insert(name);
+
+  BST<string> tree_test2{tree_test};  // Copy ctor
+
+  // check height
+  if (tree_test.Height() != tree_test2.Height())
+    pass = false;
+  
+  // modify the original tree
+  tree_test.Insert("A");
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test2.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  // remove the added node
+  tree_test.Delete("A");
+  // modify the copy
+  tree_test2.Insert("B");
+
+  // make sure the original tree is not modified
+  try {
+    call_counter(true);
+    tree_test.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Complex copy ctor test ";
+
+  return pass;
+}
+
 bool test_move_ctor() {
   bool pass = true;
 
@@ -198,6 +255,28 @@ bool test_move_ctor() {
   cout << "Move ctor test ";
 
   return pass;
+}
+
+bool test_complex_move_ctor() {
+  bool pass = true;
+
+  BST<string> tree_test{ReturnStrBST()};  // Move ctor
+
+  // check height
+  if (tree_test.Height() != MAX_HEIGHT)
+    pass = false;
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Complex move ctor test ";
+
+  return pass;  
 }
 
 bool test_op_equal() {
@@ -605,11 +684,24 @@ void breadth_order_checker(int num) {
     throw Exception("LevelOrderCheker failed");
 }
 
+void name_in_order_checker(string name) {
+  if (name != INORDER_NAMES[call_counter()])
+    throw Exception("NameInOrderCheker failed");
+}
+
 // return a BST with the numbers in NUMS
 BST<int> ReturnIntBST() {
   BST<int> tree{};
   for (int num : NUMS) {
     tree.Insert(num);
+  }
+  return tree;
+}
+
+BST<string> ReturnStrBST() {
+  BST<string> tree{};
+  for (string str : NAMES) {
+    tree.Insert(str);
   }
   return tree;
 }
