@@ -71,6 +71,8 @@ bool test_insert_complex_duplicate();
 bool test_delete();
 bool test_delete_not_found();
 bool test_delete_root();
+bool test_delete_complex();
+bool test_delete_complex_not_found();
 
 bool test_purge();
 bool test_empty_purge();
@@ -104,7 +106,8 @@ FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
   test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
   test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, 
-  test_complex_move_op_equal, test_insert_complex, test_insert_complex_duplicate};
+  test_complex_move_op_equal, test_insert_complex, test_insert_complex_duplicate,
+  test_delete_complex, test_delete_complex_not_found};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -536,7 +539,7 @@ bool test_delete() {
 bool test_delete_not_found() {
   bool pass = true;
 
-  BST<int> tree_test{};
+  BST<int> tree_test{ReturnIntBST()};
 
   // delete a non-existent node
   try {
@@ -570,6 +573,49 @@ bool test_delete_root() {
     pass = false;
 
   cout << "Delete root test ";
+
+  return pass;
+}
+
+bool test_delete_complex() {
+  bool pass = true;
+
+  BST<string> tree_test{ReturnStrBST()};
+
+  // delete the names in the array
+  for (int i = 0; i < NUM_NAMES; ++i) {
+    tree_test.Delete(DELETE_NAMES[i]);
+    if (tree_test.Height() != DELETE_NAME_HEIGHTS[i]) {
+      // make sure the height is correct for each deletion
+      pass = false;
+      break;
+    }
+    if (tree_test.Contains(DELETE_NAMES[i])) {
+      // make sure the node is deleted
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Complex delete test ";
+
+  return pass;
+}
+
+bool test_delete_complex_not_found() {
+  bool pass = true;
+
+  BST<string> tree_test{ReturnStrBST()};
+
+  // delete a non-existent node
+  try {
+    tree_test.Delete("A");
+    pass = false;
+  } catch (Exception &e) {
+    // make sure an exception is thrown
+  }
+
+  cout << "Complex delete non-existent test ";
 
   return pass;
 }
