@@ -49,7 +49,7 @@ class BST {
   void Insert(const T& data); // 4/4
   void Delete(const T& data); // 5/5
   void Purge(); // 2/2
-  int Height() const; // 2/3
+  int Height() const; // 3/3
 
   void InOrder(Vistor v) const; // 1/1
   void PreOrder(Vistor v) const; // 1/1
@@ -58,7 +58,7 @@ class BST {
 
   // not required
   Node<T>* GetRoot() const; // 0/0
-  bool Contains(const T& data) const; // 1/2
+  bool Contains(const T& data) const; // 1/3
 };
 
 // root just needs to be initialized to nullptr

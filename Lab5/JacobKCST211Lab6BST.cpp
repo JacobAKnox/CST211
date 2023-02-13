@@ -79,6 +79,7 @@ bool test_empty_purge();
 
 bool test_height();
 bool test_empty_height();
+bool test_complex_height();
 
 bool test_in_order();
 bool test_pre_order();
@@ -107,7 +108,7 @@ FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
   test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, 
   test_complex_move_op_equal, test_insert_complex, test_insert_complex_duplicate,
-  test_delete_complex, test_delete_complex_not_found};
+  test_delete_complex, test_delete_complex_not_found, test_complex_height};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -720,6 +721,46 @@ bool test_empty_height() {
     pass = false;
 
   cout << "Empty height test ";
+
+  return pass;
+}
+
+bool test_complex_height() {
+  bool pass = true;
+
+  BST<string> tree_test{};
+
+  if (tree_test.Height() != 0)
+    pass = false;
+
+  try {
+    // insert the names in the array
+    for (int i = 0; i < NUM_NAMES; ++i) {
+      tree_test.Insert(NAMES[i]);
+      if (tree_test.Height() != NAME_HEIGHTS[i]) {
+        // make sure the height is correct for each insertion
+        pass = false;
+        break;
+      }
+    }
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  // make sure the height is correct
+  if (tree_test.Height() != NAME_MAX_HEIGHT)
+    pass = false;
+
+  for (int i = 0; i < NUM_NAMES; ++i) {
+    tree_test.Delete(DELETE_NAMES[i]);
+    if (tree_test.Height() != DELETE_NAME_HEIGHTS[i]) {
+      // make sure the height is correct for each deletion
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Complex height test ";
 
   return pass;
 }
