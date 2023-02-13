@@ -58,7 +58,7 @@ class BST {
 
   // not required
   Node<T>* GetRoot() const; // 0/0
-  bool Contains(const T& data) const; // 1/3
+  bool Contains(const T& data) const; // 3/3
 };
 
 // root just needs to be initialized to nullptr

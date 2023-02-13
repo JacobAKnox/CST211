@@ -86,7 +86,10 @@ bool test_pre_order();
 bool test_post_order();
 bool test_breadth();
 
+// test for contains, which is not a required function
 bool test_contains();
+bool test_empty_contains();
+bool test_complex_contains();
 
 // // Test functions for moves
 BST<int> ReturnIntBST();
@@ -105,10 +108,11 @@ FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_move_ctor, test_op_equal, test_move_op_equal, test_insert,
   test_insert_duplicate, test_delete, test_delete_not_found,
   test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
-  test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
-  test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, 
+  test_in_order, test_pre_order, test_post_order, test_breadth, test_contains,
+  test_empty_contains, test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, 
   test_complex_move_op_equal, test_insert_complex, test_insert_complex_duplicate,
-  test_delete_complex, test_delete_complex_not_found, test_complex_height};
+  test_delete_complex, test_delete_complex_not_found, test_complex_height,
+  test_complex_contains};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -851,6 +855,42 @@ bool test_contains() {
   }
 
   cout << "Contains test ";
+
+  return pass;
+}
+
+bool test_empty_contains() {
+  bool pass = true;
+
+  BST<int> tree_test{};
+
+  // check if the tree contains the numbers
+  for (int num : NUMS) {
+    if (tree_test.Contains(num)) {
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Empty contains test ";
+
+  return pass;
+}
+
+bool test_complex_contains() {
+  bool pass = true;
+
+  BST<string> tree_test{ReturnStrBST()};
+
+  // check if the tree contains the numbers
+  for (string name : NAMES) {
+    if (!tree_test.Contains(name)) {
+      pass = false;
+      break;
+    }
+  }
+
+  cout << "Complex contains test ";
 
   return pass;
 }
