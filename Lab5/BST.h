@@ -46,7 +46,7 @@ class BST {
   BST<T>& operator=(const BST& copy); // 2/2
   BST<T>& operator=(BST&& move) noexcept; // 2/2
 
-  void Insert(const T& data); // 2/4
+  void Insert(const T& data); // 4/4
   void Delete(const T& data); // 3/5
   void Purge(); // 2/2
   int Height() const; // 2/3

@@ -65,6 +65,8 @@ bool test_complex_move_op_equal();
 
 bool test_insert();
 bool test_insert_duplicate();
+bool test_insert_complex();
+bool test_insert_complex_duplicate();
 
 bool test_delete();
 bool test_delete_not_found();
@@ -101,7 +103,8 @@ FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_insert_duplicate, test_delete, test_delete_not_found,
   test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
   test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
-  test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, test_complex_move_op_equal};
+  test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, 
+  test_complex_move_op_equal, test_insert_complex, test_insert_complex_duplicate};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -453,6 +456,54 @@ bool test_insert_duplicate() {
   }
 
   cout << "Insert duplicate test ";
+
+  return pass;
+}
+
+bool test_insert_complex() {
+  bool pass = true;
+
+  BST<string> tree_test{};
+
+  // insert the names in the array
+  for (int i = 0; i < NUM_NAMES; ++i) {
+    tree_test.Insert(NAMES[i]);
+    if (tree_test.Height() != NAME_HEIGHTS[i]) {
+      // make sure the height is correct for each insertion
+      pass = false;
+      break;
+    }
+  }
+  
+  // check data order
+  try {
+    call_counter(true);
+    tree_test.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Complex insert test ";
+
+  return pass;
+}
+
+bool test_insert_complex_duplicate() {
+  bool pass = true;
+
+  BST<string> tree_test{};
+
+  tree_test.Insert("A");
+
+  // insert "A" again
+  try {
+    tree_test.Insert("A");
+    pass = false;
+  } catch (Exception &e) {
+    // make sure an exception is thrown
+  }
+
+  cout << "Complex insert duplicate test ";
 
   return pass;
 }
