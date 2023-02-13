@@ -58,8 +58,10 @@ bool test_move_ctor();
 bool test_complex_move_ctor();
 
 bool test_op_equal();
+bool test_complex_op_equal();
 
 bool test_move_op_equal();
+bool test_complex_move_op_equal();
 
 bool test_insert();
 bool test_insert_duplicate();
@@ -99,7 +101,7 @@ FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
   test_insert_duplicate, test_delete, test_delete_not_found,
   test_delete_root, test_purge, test_empty_purge, test_height, test_empty_height,
   test_in_order, test_pre_order, test_post_order, test_breadth, test_contains, 
-  test_complex_copy_ctor, test_complex_move_ctor};
+  test_complex_copy_ctor, test_complex_move_ctor, test_complex_op_equal, test_complex_move_op_equal};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -321,6 +323,48 @@ bool test_op_equal() {
   return pass;
 }
 
+bool test_complex_op_equal() {
+  bool pass = true;
+
+  BST<string> tree_test{};
+  for (string name : NAMES)
+    tree_test.Insert(name);
+
+  BST<string> tree_test2 = tree_test;  // Copy op
+
+  // check height
+  if (tree_test.Height() != tree_test2.Height())
+    pass = false;
+
+  // modify the original tree
+  tree_test.Insert("A");
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test2.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  // remove the added node
+  tree_test.Delete("A");
+  // modify the copy
+  tree_test2.Insert("B");
+
+  // make sure the original tree is not modified
+  try {
+    call_counter(true);
+    tree_test.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Complex copy op equals test ";
+
+  return pass;
+}
+
 bool test_move_op_equal() {
   bool pass = true;
 
@@ -339,6 +383,28 @@ bool test_move_op_equal() {
   }
 
   cout << "Move op equals test ";
+
+  return pass;
+}
+
+bool test_complex_move_op_equal() {
+  bool pass = true;
+
+  BST<string> tree_test = ReturnStrBST();  // Move op
+
+  // check height
+  if (tree_test.Height() != MAX_HEIGHT)
+    pass = false;
+
+  // Check data integrity
+  try {
+    call_counter(true);
+    tree_test.InOrder(name_in_order_checker);
+  } catch (Exception &e) {
+    pass = false;
+  }
+
+  cout << "Complex move op equals test ";
 
   return pass;
 }

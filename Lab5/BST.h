@@ -39,12 +39,12 @@ class BST {
  public:
   // fractions are test counts
   BST(); // 1/1
-  BST(const BST& copy); // 1/2
-  BST(BST&& move) noexcept; // 1/2
+  BST(const BST& copy); // 2/2
+  BST(BST&& move) noexcept; // 2/2
   ~BST();
 
-  BST<T>& operator=(const BST& copy); // 1/2
-  BST<T>& operator=(BST&& move) noexcept; // 1/2
+  BST<T>& operator=(const BST& copy); // 2/2
+  BST<T>& operator=(BST&& move) noexcept; // 2/2
 
   void Insert(const T& data); // 2/4
   void Delete(const T& data); // 3/5
