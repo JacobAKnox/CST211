@@ -27,17 +27,16 @@ class HashTable {
   void Rehash() {
     // create a new table
     vector<vector<pair<K, V>>> new_table;
-    new_table.resize(m_max_size * 2);
+    new_table.resize(m_max_size);
     // move all the values to the new table
     for (size_t i = 0; i < m_max_size; ++i) {
       for (pair<K, V>& p : table[i]) {
-        size_t pos = hash(p.first) % (m_max_size * 2);
+        size_t pos = hash(p.first) % (m_max_size);
         new_table[pos].push_back(p);
       }
     }
     // set the new table
     table = new_table;
-    m_max_size *= 2;
   }
 
   // calculate the position in the table
@@ -54,20 +53,20 @@ class HashTable {
  public:
 
   HashTable(); //1/1
-  HashTable(HashFunction hash); //1/2
-  HashTable(const HashTable<K, V>& rhs); //1/2
-  HashTable(HashTable<K, V>&& rhs); //1/2
-  HashTable<K, V>& operator=(const HashTable<K, V>& rhs); //1/2
-  HashTable<K, V>& operator=(HashTable<K, V>&& rhs); //1/2
+  HashTable(HashFunction hash); //1/1
+  HashTable(const HashTable<K, V>& rhs); //1/1
+  HashTable(HashTable<K, V>&& rhs); //1/1
+  HashTable<K, V>& operator=(const HashTable<K, V>& rhs); //1/1
+  HashTable<K, V>& operator=(HashTable<K, V>&& rhs); //1/1
   ~HashTable(); //0/0
   
   V operator[](const K& key) const; //1/2
   V& operator[](const K& key); //1/2
 
-  void Add(const K& key, const V& value); //1/2
-  void Remove(const K& key); //2/3
+  void Add(const K& key, const V& value); //1/1
+  void Remove(const K& key); //2/2
 
-  void setHash(HashFunction hash); //0/1
+  void setHash(HashFunction hash); //1/1
 
   void Traverse(Vistor v) const; //0/1
 
@@ -223,6 +222,7 @@ void HashTable<K, V>::Add(const K& key, const V& value) {
   // check if the table needs to be resized
   if (m_size > m_max_size*0.75) {
     // resize the table
+    m_max_size *= 2;
     Rehash();
   }
 }
@@ -247,6 +247,14 @@ void HashTable<K, V>::Remove(const K& key) {
   }
   // if the key is not found throw an exception
   throw Exception("Key not found");
+}
+
+template <typename K, typename V>
+void HashTable<K, V>::setHash(HashFunction hash) {
+  // set the hash function
+  this->hash = hash;
+  // rehash the table
+  Rehash();
 }
 
 template <typename K, typename V>

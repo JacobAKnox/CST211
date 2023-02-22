@@ -46,16 +46,20 @@ bool test_add();
 bool test_remove();
 bool test_remove_exception();
 
+bool test_set_hash();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 HashTable<string, string> ReturnStrHash();
 
 // hash from int to int
 size_t intHash(const int& key);
+size_t intHash2(const int& key);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
-                                    test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception};
+                                    test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception,
+                                    test_set_hash};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -456,8 +460,38 @@ bool test_remove_exception() {
   return pass;
 }
 
+bool test_set_hash() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{ReturnIntHash()};
+
+  // test setting a hash function
+  hashTable.setHash(intHash2);
+  if (hashTable.hash_key(1) != intHash2(1)) {
+    // make sure the hash function is set correctly
+    cout << "Hash function is not set" << endl;
+    pass = false;
+  }
+
+  // make sure the list is still there
+  for (int i = 0; i < 10; i++) {
+    if (hashTable[i] != i) {
+      cout << "Value is not " << i << endl;
+      pass = false;
+    }
+  }
+
+  cout << "Set hash test ";
+
+  return pass;
+}
+
 size_t intHash(const int& key) {
   return key;
+}
+
+size_t intHash2(const int& key) {
+  return key + 3;
 }
 
 HashTable<int, int> ReturnIntHash() {
