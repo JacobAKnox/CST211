@@ -40,6 +40,8 @@ bool test_move_op_equal();
 
 bool test_bracket_op();
 
+bool test_add();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 HashTable<string, string> ReturnStrHash();
@@ -48,8 +50,8 @@ HashTable<string, string> ReturnStrHash();
 size_t intHash(const int& key);
 
 // Array of test functions
-FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
-                                    test_move_ctor, test_op_equal, test_move_op_equal, test_bracket_op};
+FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
+                                    test_move_op_equal, test_bracket_op, test_add};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -87,7 +89,7 @@ bool test_default_ctor() {
   bool pass = true;
 
   HashTable<string, int> hashTable{};
-  
+
   if (hashTable.size() != 0) {
     cout << "Size is not 0" << endl;
     pass = false;
@@ -97,7 +99,7 @@ bool test_default_ctor() {
     cout << "Max size is not 10" << endl;
     pass = false;
   }
-  
+
   if (hashTable.hash_key("test") != hash<string>{}("test")) {
     cout << "Hash function is not set" << endl;
     pass = false;
@@ -141,7 +143,7 @@ bool test_copy_ctor() {
   for (int i = 0; i < 10; i++) {
     hashTable.Add(i, i);
   }
-             
+
   HashTable<int, int> hashTable2{hashTable};
 
   if (hashTable2.size() != 10) {
@@ -297,7 +299,9 @@ bool test_bracket_op() {
   HashTable<int, int> hashTable{intHash};
 
   for (int i = 0; i < 7; i++) {
+    // test adding a value
     hashTable[i] = i;
+    // test getting a value
     if (hashTable[i] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
@@ -325,6 +329,7 @@ bool test_bracket_op() {
     cout << "Size is not 8" << endl;
     pass = false;
   }
+  // double size indicates that the table has been resized and rehashed
   if (hashTable.max_size() != 20) {
     cout << "Max size is not 20" << endl;
     pass = false;
@@ -335,6 +340,57 @@ bool test_bracket_op() {
   }
 
   cout << "Bracket op test ";
+
+  return pass;
+}
+
+bool test_add() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{intHash};
+
+  for (int i = 0; i < 7; i++) {
+    // test adding a value
+    hashTable.Add(i, i);
+    // make sure the value is there
+    if (hashTable[i] != i) {
+      cout << "Value is not " << i << endl;
+      pass = false;
+    }
+    // make sure the size is correct
+    if (hashTable.size() != i + 1) {
+      cout << "Size is not " << i + 1 << endl;
+      pass = false;
+    }
+  }
+
+  if (hashTable.size() != 7) {
+    cout << "Size is not 7" << endl;
+    pass = false;
+  }
+  // max size being default indicates that the table has not been resized
+  if (hashTable.max_size() != 10) {
+    cout << "Max size is not 10" << endl;
+    pass = false;
+  }
+
+  // resize the table above 75% full
+  hashTable.Add(8, 8);
+  if (hashTable.size() != 8) {
+    cout << "Size is not 8" << endl;
+    pass = false;
+  }
+  // double size indicates that the table has been resized and rehashed
+  if (hashTable.max_size() != 20) {
+    cout << "Max size is not 20" << endl;
+    pass = false;
+  }
+  if (hashTable[8] != 8) {
+    cout << "Value is not 8" << endl;
+    pass = false;
+  }
+
+  cout << "Add test ";
 
   return pass;
 }

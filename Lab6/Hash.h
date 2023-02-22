@@ -62,7 +62,7 @@ class HashTable {
   V operator[](const K& key) const; //1/2
   V& operator[](const K& key); //1/2
 
-  void Add(const K& key, const V& value); //0/2
+  void Add(const K& key, const V& value); //1/2
   void Remove(const K& key); //0/2
 
   void setHash(HashFunction hash); //0/1
