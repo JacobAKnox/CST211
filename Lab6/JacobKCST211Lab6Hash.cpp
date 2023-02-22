@@ -21,11 +21,6 @@ using std::hash;
 #include "Hash.h"
 #include "Exception.h"
 
-// Strings to test
-const string NAMES[] = {"Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
-                        "Kate", "Terry", "Ann", "Elaine", "Stephanie", "Wanda", "Oscar",
-                        "Oliver", "Tobey"};
-
 // Test function declaration
 bool test_default_ctor();
 
@@ -40,6 +35,8 @@ bool test_op_equal();
 bool test_move_op_equal();
 
 bool test_bracket_op();
+bool test_bracket_op_empty();
+bool test_bracket_op_dosent_exist();
 
 bool test_add();
 
@@ -50,7 +47,6 @@ bool test_set_hash();
 
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
-HashTable<string, string> ReturnStrHash();
 
 // hash from int to int
 size_t intHash(const int& key);
@@ -59,7 +55,7 @@ size_t intHash2(const int& key);
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
                                     test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception,
-                                    test_set_hash};
+                                    test_set_hash, test_bracket_op_empty, test_bracket_op_dosent_exist};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -307,10 +303,11 @@ bool test_bracket_op() {
   HashTable<int, int> hashTable{intHash};
 
   for (int i = 0; i < 7; i++) {
-    // test adding a value
-    hashTable[i] = i;
+    hashTable.Add(i, i);
+    // test setting a value
+    hashTable[i] = i * 2;
     // test getting a value
-    if (hashTable[i] != i) {
+    if (hashTable[i] != i * 2) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
@@ -325,30 +322,42 @@ bool test_bracket_op() {
     pass = false;
   }
 
-  // max size being default indicates that the table has not been resized
-  if (hashTable.max_size() != 10) {
-    cout << "Max size is not 10" << endl;
-    pass = false;
-  }
-
-  // resize the table above 75% full
-  hashTable[8] = 8;
-  if (hashTable.size() != 8) {
-    cout << "Size is not 8" << endl;
-    pass = false;
-  }
-  // double size indicates that the table has been resized and rehashed
-  if (hashTable.max_size() != 20) {
-    cout << "Max size is not 20" << endl;
-    pass = false;
-  }
-  if (hashTable[8] != 8) {
-    cout << "Value is not 8" << endl;
-    pass = false;
-  }
-
   cout << "Bracket op test ";
 
+  return pass;
+}
+
+bool test_bracket_op_empty() {
+  bool pass = true;
+  
+  HashTable<int, int> hashTable{intHash};
+
+  try {
+    hashTable[0];
+    cout << "No exception thrown" << endl;
+    pass = false;
+  } catch (const Exception &e) { 
+    // make sure the exception is the correct one
+  }
+
+  cout << "Bracket op empty test ";
+  return pass;
+}
+
+bool test_bracket_op_dosent_exist() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{ReturnIntHash()};
+  
+  try {
+    hashTable[100];
+    cout << "No exception thrown" << endl;
+    pass = false;
+  } catch (const Exception &e) { 
+    // make sure the exception is the correct one
+  }
+
+  cout << "Bracket op dosent exist test ";
   return pass;
 }
 
@@ -500,10 +509,5 @@ HashTable<int, int> ReturnIntHash() {
   for (int i = 0; i < 10; i++)
     hash.Add(i, i);
 
-  return hash;
-}
-
-HashTable<string, string> ReturnStrHash() {
-  HashTable<string, string> hash{};
   return hash;
 }

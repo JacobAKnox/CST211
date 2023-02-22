@@ -60,8 +60,8 @@ class HashTable {
   HashTable<K, V>& operator=(HashTable<K, V>&& rhs); //1/1
   ~HashTable(); //0/0
   
-  V operator[](const K& key) const; //1/2
-  V& operator[](const K& key); //1/2
+  V operator[](const K& key) const; //3/3
+  V& operator[](const K& key); //1/1
 
   void Add(const K& key, const V& value); //1/1
   void Remove(const K& key); //2/2
@@ -167,16 +167,16 @@ V HashTable<K, V>::operator[](const K& key) const {
   // get the hash of the key
   size_t hash_key = calculate_position(key);
   // get the vector at the hash key
-  vector<pair<K, V>> vec = table[hash_key];
+  vector<pair<K, V>> &vec = table[hash_key];
   // loop through the vector
   for (size_t i = 0; i < vec.size(); i++) {
     // if the key matches, return the value
     if (vec[i].first == key) {
-      return vec[i].second;
+      return table[hash_key][i].second;
     }
   }
-  // if the key is not found, return a default value
-  return V();
+  // if the key is not found, throw an exception
+  throw Exception("Key not found");
 }
 
 template <typename K, typename V>
@@ -189,13 +189,11 @@ V& HashTable<K, V>::operator[](const K& key) {
   for (size_t i = 0; i < vec.size(); i++) {
     // if the key matches, return the value
     if (vec[i].first == key) {
-      return vec[i].second;
+      return table[hash_key][i].second;
     }
   }
-  // if the key is not found, add it to the vector
-  Add(key, V());
-  // return the value
-  return table[hash_key][table[hash_key].size() - 1].second;
+  // if the key is not found throw an exception
+  throw Exception("Key not found");
 }
 
 template <typename K, typename V>
