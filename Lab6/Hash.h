@@ -1,28 +1,46 @@
 #ifndef HASH_H
-#define HAHS_H
+#define HASH_H
 
 #include <vector>
 
+using std::hash;
+
 using std::vector;
 using std::pair;
+using std::size_t;
 
 // Jacob Knox CST211 Lab6 Due: 3/2/2023
 template <typename K, typename V>
 class HashTable {
- private:
-  size_t max_size;
-  vector<vector<pair<K, V>>> table;
+ public:
+  typedef size_t (*HashFunction)(const K& key);
+  typedef void (*Vistor)(const K& key, const V& value);
 
-  typedef int (*HashFunction)(const K& key);
-  typedef void (*Visitor)(const V& value);
+ private:
+  size_t m_max_size;
+  size_t m_size;
+  vector<vector<pair<K, V>>> table;
+  HashFunction hash;
+
+  size_t calculate_position(const K& key) {
+    return hash(key) % m_max_size;
+  }
+
+  // default hash function is std::hash
+  // works for most default types
+  static size_t defaultHash(const K& key) {
+    return std::hash<K>{}(key);
+  }
 
  public:
-  HashTable() = default;
-  HashTable(const HashTable<K, V>& rhs) = default;
-  HashTable(HashTable<K, V>&& rhs) = default;
-  HashTable<K, V>& operator=(const HashTable<K, V>& rhs) = default;
-  HashTable<K, V>& operator=(HashTable<K, V>&& rhs) = default;
-  ~HashTable() = default;
+
+  HashTable();
+  HashTable(HashFunction hash);
+  HashTable(const HashTable<K, V>& rhs);
+  HashTable(HashTable<K, V>&& rhs);
+  HashTable<K, V>& operator=(const HashTable<K, V>& rhs);
+  HashTable<K, V>& operator=(HashTable<K, V>&& rhs);
+  ~HashTable();
   
   V operator[](const K& key) const;
   V& operator[](const K& key);
@@ -33,5 +51,173 @@ class HashTable {
   void setHash(HashFunction hash);
 
   void Traverse(Vistor v) const;
+
+  // not required
+  size_t size() const;
+  size_t max_size() const;
+  size_t hash_key(const K& key);
+  HashFunction getHash() const {
+    return hash;
+  }
 };
+
+template <typename K, typename V>
+HashTable<K, V>::HashTable() {
+  // set defaults
+  m_max_size = 10;
+  m_size = 0;
+  hash = defaultHash;
+  table.resize(m_max_size);
+}
+
+template <typename K, typename V>
+HashTable<K, V>::HashTable(HashFunction hash_func) {
+  // set defaults and hash function
+  m_max_size = 10;
+  m_size = 0;
+  hash = hash_func;
+  table.resize(m_max_size);
+}
+
+template <typename K, typename V>
+HashTable<K, V>::HashTable(const HashTable<K, V>& rhs) {
+  // copy all values
+  m_max_size = rhs.m_max_size;
+  m_size = rhs.m_size;
+  hash = rhs.hash;
+  // std::vector::operator= handles copying the vector
+  table = rhs.table;
+}
+
+template <typename K, typename V>
+HashTable<K, V>::HashTable(HashTable<K, V>&& rhs) {
+  // move all values
+  m_max_size = rhs.m_max_size;
+  m_size = rhs.m_size;
+  // std::vector::operator= handles moving the vector
+  table = rhs.table;
+  // clear the rhs table
+  rhs.m_max_size = 0;
+  rhs.m_size = 0;
+  hash = rhs.hash;
+  rhs.table.clear();
+}
+
+template <typename K, typename V>
+HashTable<K, V>& HashTable<K, V>::operator=(const HashTable<K, V>& rhs) {
+  if (this != &rhs) {
+    // copy all values
+    m_max_size = rhs.m_max_size;
+    m_size = rhs.m_size;
+    hash = rhs.hash;
+    // std::vector::operator= handles copying the vector
+    table = rhs.table;
+  }
+  return *this;
+}
+
+template <typename K, typename V>
+HashTable<K, V>& HashTable<K, V>::operator=(HashTable<K, V>&& rhs) {
+  if (this != &rhs) {
+    // move all values
+    m_max_size = rhs.m_max_size;
+    m_size = rhs.m_size;
+    // std::vector::operator= handles moving the vector
+    table = rhs.table;
+    // clear the rhs table
+    rhs.m_max_size = 0;
+    rhs.m_size = 0;
+    hash = rhs.hash;
+    rhs.table.clear();
+  }
+  return *this;
+}
+
+template <typename K, typename V>
+HashTable<K, V>::~HashTable() {
+  // clear the values
+  m_max_size = 0;
+  m_size = 0;
+  hash = nullptr;
+  // std::vector and std::pair handle freeing memory
+  table.clear();
+}
+
+template <typename K, typename V>
+V HashTable<K, V>::operator[](const K& key) const {
+  // get the hash of the key
+  size_t hash_key = calculate_position(key);
+  // get the vector at the hash key
+  vector<pair<K, V>> vec = table[hash_key];
+  // loop through the vector
+  for (size_t i = 0; i < vec.size(); i++) {
+    // if the key matches, return the value
+    if (vec[i].first == key) {
+      return vec[i].second;
+    }
+  }
+  // if the key is not found, return a default value
+  return V();
+}
+
+template <typename K, typename V>
+V& HashTable<K, V>::operator[](const K& key) {
+  // get the hash of the key
+  size_t hash_key = calculate_position(key);
+  // get the vector at the hash key
+  vector<pair<K, V>> vec = table[hash_key];
+  // loop through the vector
+  for (size_t i = 0; i < vec.size(); i++) {
+    // if the key matches, return the value
+    if (vec[i].first == key) {
+      return vec[i].second;
+    }
+  }
+  // if the key is not found, add it to the vector
+  Add(key, V());
+  // return the value
+  return table[hash_key][table[hash_key].size() - 1].second;
+}
+
+template <typename K, typename V>
+void HashTable<K, V>::Add(const K& key, const V& value) {
+  // get the hash of the key
+  size_t hash_key = calculate_position(key);
+  // get the vector at the hash key
+  vector<pair<K, V>> vec = table[hash_key];
+  // loop through the vector
+  for (size_t i = 0; i < vec.size(); i++) {
+    // if the key matches, replace the value
+    if (vec[i].first == key) {
+      vec[i].second = value;
+      return;
+    }
+  }
+  // if the key is not found, add it to the vector
+  vec.push_back(pair<K, V>(key, value));
+  // set the vector at the hash key
+  table[hash_key] = vec;
+  // increment the size
+  m_size++;
+}
+
+template <typename K, typename V>
+size_t HashTable<K, V>::size() const {
+  // return the size 
+  return m_size;
+}
+
+template <typename K, typename V>
+size_t HashTable<K, V>::max_size() const {
+  // return the max size
+  return m_max_size;
+}
+
+// hash a key with the hash function, meant to be used for testing the hash
+template <typename K, typename V>
+size_t HashTable<K, V>::hash_key(const K& key) {
+  // hash the key
+  return hash(key);
+}
+
 #endif  // HASH_H
