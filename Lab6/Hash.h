@@ -9,6 +9,8 @@ using std::vector;
 using std::pair;
 using std::size_t;
 
+#include "Exception.h"
+
 // Jacob Knox CST211 Lab6 Due: 3/2/2023
 template <typename K, typename V>
 class HashTable {
@@ -39,7 +41,7 @@ class HashTable {
   }
 
   // calculate the position in the table
-  size_t calculate_position(const K& key) {
+  size_t calculate_position(const K& key) const {
     return hash(key) % m_max_size;
   }
 
@@ -63,7 +65,7 @@ class HashTable {
   V& operator[](const K& key); //1/2
 
   void Add(const K& key, const V& value); //1/2
-  void Remove(const K& key); //0/2
+  void Remove(const K& key); //2/3
 
   void setHash(HashFunction hash); //0/1
 
@@ -73,6 +75,7 @@ class HashTable {
   size_t size() const;
   size_t max_size() const;
   size_t hash_key(const K& key);
+  bool contains(const K& key) const;
   HashFunction getHash() const {
     return hash;
   }
@@ -222,6 +225,45 @@ void HashTable<K, V>::Add(const K& key, const V& value) {
     // resize the table
     Rehash();
   }
+}
+
+template <typename K, typename V>
+void HashTable<K, V>::Remove(const K& key) {
+  // get the hash of the key
+  size_t hash_key = calculate_position(key);
+  // get the vector at the hash key
+  vector<pair<K, V>> vec = table[hash_key];
+  // loop through the vector
+  for (size_t i = 0; i < vec.size(); i++) {
+    // if the key matches, remove the value
+    if (vec[i].first == key) {
+      vec.erase(vec.begin() + i);
+      // set the vector at the hash key
+      table[hash_key] = vec;
+      // decrement the size
+      m_size--;
+      return;
+    }
+  }
+  // if the key is not found throw an exception
+  throw Exception("Key not found");
+}
+
+template <typename K, typename V>
+bool HashTable<K, V>::contains(const K& key) const {
+  // get the hash of the key
+  size_t hash_key = calculate_position(key);
+  // get the vector at the hash key
+  vector<pair<K, V>> vec = table[hash_key];
+  // loop through the vector
+  for (size_t i = 0; i < vec.size(); i++) {
+    // if the key matches, return true
+    if (vec[i].first == key) {
+      return true;
+    }
+  }
+  // if the key is not found, return false
+  return false;
 }
 
 template <typename K, typename V>

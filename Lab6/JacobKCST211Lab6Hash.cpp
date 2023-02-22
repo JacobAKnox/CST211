@@ -19,6 +19,7 @@ using std::hash;
 // #include <crtdbg.h>
 // #include <conio.h>
 #include "Hash.h"
+#include "Exception.h"
 
 // Strings to test
 const string NAMES[] = {"Kyle", "Brit", "Seth", "Alex", "Josh", "Kian",
@@ -42,6 +43,9 @@ bool test_bracket_op();
 
 bool test_add();
 
+bool test_remove();
+bool test_remove_exception();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 HashTable<string, string> ReturnStrHash();
@@ -51,7 +55,7 @@ size_t intHash(const int& key);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
-                                    test_move_op_equal, test_bracket_op, test_add};
+                                    test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -391,6 +395,63 @@ bool test_add() {
   }
 
   cout << "Add test ";
+
+  return pass;
+}
+
+bool test_remove() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{ReturnIntHash()};
+
+  // test removing a value that does not exist
+  try {
+    hashTable.Remove(11);
+    cout << "Remove did not throw an exception" << endl;
+    pass = false;
+  } catch (const Exception& e) {
+    // do nothing
+  }
+
+  for (int i = 0; i < 10; i++) {
+    // test removing a value
+    hashTable.Remove(i);
+    // make sure the value is gone
+    if (hashTable.contains(i)) {
+      cout << "Value is still there" << endl;
+      pass = false;
+    }
+    // make sure the size is correct
+    if (hashTable.size() != 9 - i) {
+      cout << "Size is not " << 9 - i << endl;
+      pass = false;
+    }
+  }
+
+  if (hashTable.size() != 0) {
+    cout << "Size is not 0" << endl;
+    pass = false;
+  }
+
+  cout << "Remove test ";
+
+  return pass;
+}
+
+bool test_remove_exception() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{intHash};
+
+  try {
+    // test removing a value that does not exist
+    hashTable.Remove(0);
+    cout << "Remove exception test ";
+    pass = false;
+  } catch (const Exception& e) {
+    // test that the correct exception is thrown
+    cout << "Remove exception test ";
+  }
 
   return pass;
 }
