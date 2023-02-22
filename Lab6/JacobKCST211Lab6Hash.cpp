@@ -38,6 +38,8 @@ bool test_op_equal();
 
 bool test_move_op_equal();
 
+bool test_bracket_op();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 HashTable<string, string> ReturnStrHash();
@@ -47,7 +49,7 @@ size_t intHash(const int& key);
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor,
-                                    test_move_ctor, test_op_equal, test_move_op_equal};
+                                    test_move_ctor, test_op_equal, test_move_op_equal, test_bracket_op};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -285,6 +287,54 @@ bool test_move_op_equal() {
   }
 
   cout << "Move op equals test ";
+
+  return pass;
+}
+
+bool test_bracket_op() {
+  bool pass = true;
+
+  HashTable<int, int> hashTable{intHash};
+
+  for (int i = 0; i < 7; i++) {
+    hashTable[i] = i;
+    if (hashTable[i] != i) {
+      cout << "Value is not " << i << endl;
+      pass = false;
+    }
+    if (hashTable.size() != i + 1) {
+      cout << "Size is not " << i + 1 << endl;
+      pass = false;
+    }
+  }
+
+  if (hashTable.size() != 7) {
+    cout << "Size is not 7" << endl;
+    pass = false;
+  }
+
+  // max size being default indicates that the table has not been resized
+  if (hashTable.max_size() != 10) {
+    cout << "Max size is not 10" << endl;
+    pass = false;
+  }
+
+  // resize the table above 75% full
+  hashTable[8] = 8;
+  if (hashTable.size() != 8) {
+    cout << "Size is not 8" << endl;
+    pass = false;
+  }
+  if (hashTable.max_size() != 20) {
+    cout << "Max size is not 20" << endl;
+    pass = false;
+  }
+  if (hashTable[8] != 8) {
+    cout << "Value is not 8" << endl;
+    pass = false;
+  }
+
+  cout << "Bracket op test ";
 
   return pass;
 }
