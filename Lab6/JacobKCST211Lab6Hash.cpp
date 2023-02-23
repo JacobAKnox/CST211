@@ -50,6 +50,7 @@ bool test_traverse_empty();
 
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
+HashTable<string, int> ReturnStringHash();
 
 // hash from int to int
 size_t intHash(const int& key);
@@ -57,6 +58,9 @@ size_t intHash2(const int& key);
 
 // hash from string to int
 size_t stringHash(const string& key);
+size_t stringHash2(const string& key);
+
+string test_strings[] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
@@ -124,7 +128,7 @@ bool test_default_ctor() {
 bool test_param_ctor() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   if (hashTable.size() != 0) {
     cout << "Size is not 0" << endl;
@@ -136,7 +140,7 @@ bool test_param_ctor() {
     pass = false;
   }
 
-  if (hashTable.hash_key(1) != intHash(1)) {
+  if (hashTable.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
@@ -149,13 +153,13 @@ bool test_param_ctor() {
 bool test_copy_ctor() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   for (int i = 0; i < 10; i++) {
-    hashTable.Add(i, i);
+    hashTable.Add(test_strings[i], i);
   }
 
-  HashTable<int, int> hashTable2{hashTable};
+  HashTable<string, int> hashTable2{hashTable};
 
   if (hashTable2.size() != 10) {
     cout << "Size is not 10" << endl;
@@ -163,32 +167,32 @@ bool test_copy_ctor() {
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable2[i] != i) {
+    if (hashTable2[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable2.hash_key(1) != intHash(1)) {
+  if (hashTable2.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
 
   // verify that the copy is independent of the original
-  hashTable2.Add(10, 10);
+  hashTable2.Add("ten", 10);
   if (hashTable.size() != 10) {
     cout << "Size is not 10" << endl;
     pass = false;
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable.hash_key(1) != intHash(1)) {
+  if (hashTable.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
@@ -201,7 +205,7 @@ bool test_copy_ctor() {
 bool test_move_ctor() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{ReturnIntHash()};
+  HashTable<string, int> hashTable{ReturnStringHash()};
 
   if (hashTable.size() != 10) {
     cout << "Size is not 10" << endl;
@@ -209,13 +213,13 @@ bool test_move_ctor() {
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable.hash_key(1) != intHash(1)) {
+  if (hashTable.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
@@ -228,13 +232,13 @@ bool test_move_ctor() {
 bool test_op_equal() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   for (int i = 0; i < 10; i++) {
-    hashTable.Add(i, i);
+    hashTable.Add(test_strings[i], i);
   }
 
-  HashTable<int, int> hashTable2 = hashTable;
+  HashTable<string, int> hashTable2 = hashTable;
 
   if (hashTable2.size() != 10) {
     cout << "Size is not 10" << endl;
@@ -242,32 +246,32 @@ bool test_op_equal() {
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable2[i] != i) {
+    if (hashTable2[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable2.hash_key(1) != intHash(1)) {
+  if (hashTable2.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
 
   // verify that the copy is independent of the original
-  hashTable2.Add(10, 10);
+  hashTable2.Add("ten", 10);
   if (hashTable.size() != 10) {
     cout << "Size is not 10" << endl;
     pass = false;
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable.hash_key(1) != intHash(1)) {
+  if (hashTable.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
@@ -280,7 +284,7 @@ bool test_op_equal() {
 bool test_move_op_equal() {
   bool pass = true;
 
-  HashTable<int, int> hashTable = ReturnIntHash();
+  HashTable<string, int> hashTable = ReturnStringHash();
 
   if (hashTable.size() != 10) {
     cout << "Size is not 10" << endl;
@@ -288,13 +292,13 @@ bool test_move_op_equal() {
   }
 
   for (int i = 0; i < 10; i++) {
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
   }
 
-  if (hashTable.hash_key(1) != intHash(1)) {
+  if (hashTable.hash_key("one") != stringHash("one")) {
     cout << "Hash function is not set" << endl;
     pass = false;
   }
@@ -307,14 +311,14 @@ bool test_move_op_equal() {
 bool test_bracket_op() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   for (int i = 0; i < 7; i++) {
-    hashTable.Add(i, i);
+    hashTable.Add(test_strings[i], i);
     // test setting a value
-    hashTable[i] = i * 2;
+    hashTable[test_strings[i]] = i * 2;
     // test getting a value
-    if (hashTable[i] != i * 2) {
+    if (hashTable[test_strings[i]] != i * 2) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
@@ -337,10 +341,10 @@ bool test_bracket_op() {
 bool test_bracket_op_empty() {
   bool pass = true;
   
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   try {
-    hashTable[0];
+    hashTable[test_strings[0]];
     cout << "No exception thrown" << endl;
     pass = false;
   } catch (const Exception &e) { 
@@ -354,10 +358,10 @@ bool test_bracket_op_empty() {
 bool test_bracket_op_dosent_exist() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{ReturnIntHash()};
+  HashTable<string, int> hashTable{ReturnStringHash()};
   
   try {
-    hashTable[100];
+    hashTable["one hundred"];
     cout << "No exception thrown" << endl;
     pass = false;
   } catch (const Exception &e) { 
@@ -371,13 +375,13 @@ bool test_bracket_op_dosent_exist() {
 bool test_add() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   for (int i = 0; i < 7; i++) {
     // test adding a value
-    hashTable.Add(i, i);
+    hashTable.Add(test_strings[i], i);
     // make sure the value is there
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
@@ -399,7 +403,7 @@ bool test_add() {
   }
 
   // resize the table above 75% full
-  hashTable.Add(8, 8);
+  hashTable.Add("eight", 8);
   if (hashTable.size() != 8) {
     cout << "Size is not 8" << endl;
     pass = false;
@@ -409,7 +413,7 @@ bool test_add() {
     cout << "Max size is not 20" << endl;
     pass = false;
   }
-  if (hashTable[8] != 8) {
+  if (hashTable["eight"] != 8) {
     cout << "Value is not 8" << endl;
     pass = false;
   }
@@ -422,11 +426,11 @@ bool test_add() {
 bool test_remove() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{ReturnIntHash()};
+  HashTable<string, int> hashTable{ReturnStringHash()};
 
   // test removing a value that does not exist
   try {
-    hashTable.Remove(11);
+    hashTable.Remove("eleven");
     cout << "Remove did not throw an exception" << endl;
     pass = false;
   } catch (const Exception& e) {
@@ -435,9 +439,9 @@ bool test_remove() {
 
   for (int i = 0; i < 10; i++) {
     // test removing a value
-    hashTable.Remove(i);
+    hashTable.Remove(test_strings[i]);
     // make sure the value is gone
-    if (hashTable.contains(i)) {
+    if (hashTable.contains(test_strings[i])) {
       cout << "Value is still there" << endl;
       pass = false;
     }
@@ -461,11 +465,11 @@ bool test_remove() {
 bool test_remove_exception() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   try {
     // test removing a value that does not exist
-    hashTable.Remove(0);
+    hashTable.Remove("zero");
     cout << "Remove exception test ";
     pass = false;
   } catch (const Exception& e) {
@@ -479,11 +483,11 @@ bool test_remove_exception() {
 bool test_set_hash() {
   bool pass = true;
 
-  HashTable<int, int> hashTable{ReturnIntHash()};
+  HashTable<string, int> hashTable{ReturnStringHash()};
 
   // test setting a hash function
-  hashTable.setHash(intHash2);
-  if (hashTable.hash_key(1) != intHash2(1)) {
+  hashTable.setHash(stringHash2);
+  if (hashTable.hash_key("one") != stringHash2("one")) {
     // make sure the hash function is set correctly
     cout << "Hash function is not set" << endl;
     pass = false;
@@ -491,7 +495,7 @@ bool test_set_hash() {
 
   // make sure the list is still there
   for (int i = 0; i < 10; i++) {
-    if (hashTable[i] != i) {
+    if (hashTable[test_strings[i]] != i) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
@@ -502,10 +506,10 @@ bool test_set_hash() {
   return pass;
 }
 
-int traverse_array[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+string traverse_array[10] = {"", "", "", "", "", "", "", "", "", ""};
 
-void test_traverse(const int& key, const int& value) {
-  traverse_array[key] = value;
+void test_traverse(const string& key, const int& value) {
+  traverse_array[value] = key;
 }
 
 bool test_traverse() {
@@ -513,15 +517,15 @@ bool test_traverse() {
 
   // reset the array
   for (int i = 0; i < 10; i++)
-    traverse_array[i] = -1;
+    traverse_array[i] = "";
 
-  HashTable<int, int> hashTable{ReturnIntHash()};
+  HashTable<string, int> hashTable{ReturnStringHash()};
 
   // test traversing the list
   hashTable.Traverse(test_traverse);
 
   for (int i = 0; i < 10; i++) {
-    if (traverse_array[i] != i) {
+    if (traverse_array[i] != test_strings[i]) {
       cout << "Value is not " << i << endl;
       pass = false;
     }
@@ -536,16 +540,16 @@ bool test_traverse_empty() {
   bool pass = true;
 
   for (int i = 0; i < 10; i++)
-    traverse_array[i] = -1;
+    traverse_array[i] = "";
 
-  HashTable<int, int> hashTable{intHash};
+  HashTable<string, int> hashTable{stringHash};
 
   // test traversing an empty list
   hashTable.Traverse(test_traverse);
 
   for (int i = 0; i < 10; i++) {
-    if (traverse_array[i] != -1) {
-      cout << "Value is not -1" << endl;
+    if (traverse_array[i] != "") {
+      cout << "Value is not \"\"" << endl;
       pass = false;
     }
   }
@@ -563,11 +567,38 @@ size_t intHash2(const int& key) {
   return key + 3;
 }
 
+size_t stringHash(const string& key) {
+  size_t hash = 0;
+
+  for (int i = 0; i < key.length(); i++)
+    hash += key[i];
+
+  return hash;
+}
+
+size_t stringHash2(const string& key) {
+  size_t hash = 0;
+
+  for (int i = 0; i < key.length(); i++)
+    hash += key[i];
+
+  return hash + 3;
+}
+
 HashTable<int, int> ReturnIntHash() {
   HashTable<int, int> hash{intHash};
 
   for (int i = 0; i < 10; i++)
     hash.Add(i, i);
+
+  return hash;
+}
+
+HashTable<string, int> ReturnStringHash() {
+  HashTable<string, int> hash{stringHash};
+
+  for (int i = 0; i < 10; i++)
+    hash.Add(test_strings[i], i);
 
   return hash;
 }

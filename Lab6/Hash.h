@@ -67,7 +67,7 @@ class HashTable {
 
   void setHash(HashFunction hash);  // 1/1
 
-  void Traverse(Vistor v) const;  // 0/1
+  void Traverse(Vistor v) const;  // 2/2
 
   // not required
   size_t size() const;
