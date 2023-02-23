@@ -69,6 +69,9 @@ class HashTable {
 
   void Traverse(Vistor v) const;  // 2/2
 
+  bool operator==(const HashTable<K, V>& rhs) const;  // 1/1
+  bool operator!=(const HashTable<K, V>& rhs) const;  // 1/1
+
   // not required
   size_t size() const;
   size_t max_size() const;
@@ -166,7 +169,7 @@ V HashTable<K, V>::operator[](const K& key) const {
   // get the hash of the key
   size_t hash_key = calculate_position(key);
   // get the vector at the hash key
-  vector<pair<K, V>>& vec = table[hash_key];
+  vector<pair<K, V>> vec = table[hash_key];
   // loop through the vector
   for (size_t i = 0; i < vec.size(); i++) {
     // if the key matches, return the value
@@ -266,6 +269,38 @@ void HashTable<K, V>::Traverse(Vistor v) const {
       v(vec[j].first, vec[j].second);
     }
   }
+}
+
+template <typename K, typename V>
+bool HashTable<K, V>::operator==(const HashTable<K, V>& rhs) const {
+  // check if the sizes are equal
+  if (m_size != rhs.m_size) {
+    return false;
+  }
+  // loop through the table
+  for (size_t i = 0; i < table.size(); i++) {
+    // get the vector at the hash key
+    vector<pair<K, V>> vec = table[i];
+    // loop through the vector
+    for (size_t j = 0; j < vec.size(); j++) {
+      // check if the key exists in the rhs table
+      if (!rhs.contains(vec[j].first)) {
+        return false;
+      }
+      // check if the value is equal
+      if (vec[j].second != rhs[vec[j].first]) {
+        return false;
+      }
+    }
+  }
+  // if all checks pass, return true
+  return true;
+}
+
+template <typename K, typename V>
+bool HashTable<K, V>::operator!=(const HashTable<K, V>& rhs) const {
+  // return the opposite of ==
+  return !(*this == rhs);
 }
 
 template <typename K, typename V>

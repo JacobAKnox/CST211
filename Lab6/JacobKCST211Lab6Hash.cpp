@@ -48,6 +48,9 @@ bool test_set_hash();
 bool test_traverse();
 bool test_traverse_empty();
 
+bool test_is_equal();
+bool test_is_not_equal();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 HashTable<string, int> ReturnStringHash();
@@ -66,7 +69,7 @@ string test_strings[] = {"one", "two", "three", "four", "five", "six", "seven", 
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
                                     test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception,
                                     test_set_hash, test_bracket_op_empty, test_bracket_op_dosent_exist, test_traverse,
-                                    test_traverse_empty};
+                                    test_traverse_empty, test_is_equal, test_is_not_equal};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -555,6 +558,54 @@ bool test_traverse_empty() {
   }
 
   cout << "Traverse empty test ";
+
+  return pass;
+}
+
+bool test_is_equal() {
+  bool pass = true;
+
+  HashTable<string, int> hashTable1{ReturnStringHash()};
+  HashTable<string, int> hashTable2{ReturnStringHash()};
+
+  // test that two equal lists are equal
+  if (!(hashTable1 == hashTable2)) {
+    cout << "Lists are not equal" << endl;
+    pass = false;
+  }
+
+  // test that two unequal lists are not equal
+  hashTable1.Remove("one");
+  if (hashTable1 == hashTable2) {
+    cout << "Lists are equal" << endl;
+    pass = false;
+  }
+
+  cout << "Is equal test ";
+
+  return pass;
+}
+
+bool test_is_not_equal() {
+  bool pass = true;
+
+  HashTable<string, int> hashTable1{ReturnStringHash()};
+  HashTable<string, int> hashTable2{ReturnStringHash()};
+
+  // test that two equal lists are not not equal
+  if (hashTable1 != hashTable2) {
+    cout << "Lists are not equal" << endl;
+    pass = false;
+  }
+
+  // test that two unequal lists are not equal
+  hashTable1.Remove("one");
+  if (!(hashTable1 != hashTable2)) {
+    cout << "Lists are equal" << endl;
+    pass = false;
+  }
+
+  cout << "Is not equal test ";
 
   return pass;
 }
