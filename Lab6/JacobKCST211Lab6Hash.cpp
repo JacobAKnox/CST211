@@ -62,7 +62,14 @@ size_t intHash2(const int& key);
 // hash from string to int
 size_t stringHash(const string& key);
 size_t stringHash2(const string& key);
+size_t stringHash3(const string& key);
 
+//
+//
+// TEST KEYS
+//
+//
+// test values are the int value that corresponds to the key
 string test_strings[] = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 
 // Array of test functions
@@ -633,7 +640,13 @@ size_t stringHash2(const string& key) {
   for (int i = 0; i < key.length(); i++)
     hash += key[i];
 
-  return hash + 3;
+  return hash + key.length();
+}
+
+size_t stringHash3(const string& key) {
+  size_t hash = 0;
+
+  return key.length();
 }
 
 HashTable<int, int> ReturnIntHash() {
