@@ -45,6 +45,9 @@ bool test_remove_exception();
 
 bool test_set_hash();
 
+bool test_traverse();
+bool test_traverse_empty();
+
 // Test functions for moves
 HashTable<int, int> ReturnIntHash();
 
@@ -52,10 +55,14 @@ HashTable<int, int> ReturnIntHash();
 size_t intHash(const int& key);
 size_t intHash2(const int& key);
 
+// hash from string to int
+size_t stringHash(const string& key);
+
 // Array of test functions
 FunctionPointer test_functions[] = {test_default_ctor, test_copy_ctor, test_move_ctor, test_op_equal,
                                     test_move_op_equal, test_bracket_op, test_add, test_remove, test_remove_exception,
-                                    test_set_hash, test_bracket_op_empty, test_bracket_op_dosent_exist};
+                                    test_set_hash, test_bracket_op_empty, test_bracket_op_dosent_exist, test_traverse,
+                                    test_traverse_empty};
 
 int main() {
   //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -491,6 +498,59 @@ bool test_set_hash() {
   }
 
   cout << "Set hash test ";
+
+  return pass;
+}
+
+int traverse_array[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+
+void test_traverse(const int& key, const int& value) {
+  traverse_array[key] = value;
+}
+
+bool test_traverse() {
+  bool pass = true;
+
+  // reset the array
+  for (int i = 0; i < 10; i++)
+    traverse_array[i] = -1;
+
+  HashTable<int, int> hashTable{ReturnIntHash()};
+
+  // test traversing the list
+  hashTable.Traverse(test_traverse);
+
+  for (int i = 0; i < 10; i++) {
+    if (traverse_array[i] != i) {
+      cout << "Value is not " << i << endl;
+      pass = false;
+    }
+  }
+
+  cout << "Traverse test ";
+
+  return pass;
+}
+
+bool test_traverse_empty() {
+  bool pass = true;
+
+  for (int i = 0; i < 10; i++)
+    traverse_array[i] = -1;
+
+  HashTable<int, int> hashTable{intHash};
+
+  // test traversing an empty list
+  hashTable.Traverse(test_traverse);
+
+  for (int i = 0; i < 10; i++) {
+    if (traverse_array[i] != -1) {
+      cout << "Value is not -1" << endl;
+      pass = false;
+    }
+  }
+
+  cout << "Traverse empty test ";
 
   return pass;
 }

@@ -5,9 +5,9 @@
 
 using std::hash;
 
-using std::vector;
 using std::pair;
 using std::size_t;
+using std::vector;
 
 #include "Exception.h"
 
@@ -51,24 +51,23 @@ class HashTable {
   }
 
  public:
+  HashTable();                                             // 1/1
+  HashTable(HashFunction hash);                            // 1/1
+  HashTable(const HashTable<K, V>& rhs);                   // 1/1
+  HashTable(HashTable<K, V>&& rhs);                        // 1/1
+  HashTable<K, V>& operator=(const HashTable<K, V>& rhs);  // 1/1
+  HashTable<K, V>& operator=(HashTable<K, V>&& rhs);       // 1/1
+  ~HashTable();                                            // 0/0
 
-  HashTable(); //1/1
-  HashTable(HashFunction hash); //1/1
-  HashTable(const HashTable<K, V>& rhs); //1/1
-  HashTable(HashTable<K, V>&& rhs); //1/1
-  HashTable<K, V>& operator=(const HashTable<K, V>& rhs); //1/1
-  HashTable<K, V>& operator=(HashTable<K, V>&& rhs); //1/1
-  ~HashTable(); //0/0
-  
-  V operator[](const K& key) const; //3/3
-  V& operator[](const K& key); //1/1
+  V operator[](const K& key) const;  // 3/3
+  V& operator[](const K& key);       // 1/1
 
-  void Add(const K& key, const V& value); //1/1
-  void Remove(const K& key); //2/2
+  void Add(const K& key, const V& value);  // 1/1
+  void Remove(const K& key);               // 2/2
 
-  void setHash(HashFunction hash); //1/1
+  void setHash(HashFunction hash);  // 1/1
 
-  void Traverse(Vistor v) const; //0/1
+  void Traverse(Vistor v) const;  // 0/1
 
   // not required
   size_t size() const;
@@ -167,12 +166,12 @@ V HashTable<K, V>::operator[](const K& key) const {
   // get the hash of the key
   size_t hash_key = calculate_position(key);
   // get the vector at the hash key
-  vector<pair<K, V>> &vec = table[hash_key];
+  vector<pair<K, V>>& vec = table[hash_key];
   // loop through the vector
   for (size_t i = 0; i < vec.size(); i++) {
     // if the key matches, return the value
     if (vec[i].first == key) {
-      return table[hash_key][i].second;
+      return vec[i].second;
     }
   }
   // if the key is not found, throw an exception
@@ -184,12 +183,12 @@ V& HashTable<K, V>::operator[](const K& key) {
   // get the hash of the key
   size_t hash_key = calculate_position(key);
   // get the vector at the hash key
-  vector<pair<K, V>> vec = table[hash_key];
+  vector<pair<K, V>>& vec = table[hash_key];
   // loop through the vector
   for (size_t i = 0; i < vec.size(); i++) {
     // if the key matches, return the value
     if (vec[i].first == key) {
-      return table[hash_key][i].second;
+      return vec[i].second;
     }
   }
   // if the key is not found throw an exception
@@ -218,7 +217,7 @@ void HashTable<K, V>::Add(const K& key, const V& value) {
   m_size++;
 
   // check if the table needs to be resized
-  if (m_size > m_max_size*0.75) {
+  if (m_size > m_max_size * 0.75) {
     // resize the table
     m_max_size *= 2;
     Rehash();
@@ -256,6 +255,20 @@ void HashTable<K, V>::setHash(HashFunction hash) {
 }
 
 template <typename K, typename V>
+void HashTable<K, V>::Traverse(Vistor v) const {
+  // loop through the table
+  for (size_t i = 0; i < table.size(); i++) {
+    // get the vector at the hash key
+    vector<pair<K, V>> vec = table[i];
+    // loop through the vector
+    for (size_t j = 0; j < vec.size(); j++) {
+      // call the visitor function
+      v(vec[j].first, vec[j].second);
+    }
+  }
+}
+
+template <typename K, typename V>
 bool HashTable<K, V>::contains(const K& key) const {
   // get the hash of the key
   size_t hash_key = calculate_position(key);
@@ -274,7 +287,7 @@ bool HashTable<K, V>::contains(const K& key) const {
 
 template <typename K, typename V>
 size_t HashTable<K, V>::size() const {
-  // return the size 
+  // return the size
   return m_size;
 }
 
