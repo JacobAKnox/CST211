@@ -1,0 +1,324 @@
+1. see file in zip
+2.
+$ ./q2
+IN ORDER
+11
+12
+15
+18
+20
+25
+30
+PRE ORDER
+20
+15
+12
+11
+18
+25
+30
+POST ORDER
+11
+12
+18
+15
+30
+25
+20
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+11
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+BREADTH FIRST
+20
+15
+30
+12
+18
+11
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+11
+What is the height of the tree t2? 4
+Deleting a Node with two children...
+What is the height of the tree t2? 3
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+COPY CONSTRUCTOR:
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+OP=:
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+What is the height of the tree t1? 6
+Purging t2...
+
+
+STRINGS!!
+
+IN ORDER
+Binary
+Search
+Trees
+need
+pls
+stop
+to
+
+BREADTH FIRST
+Binary
+Search
+Trees
+need
+to
+stop
+pls
+
+PRE ORDER
+Binary
+Search
+Trees
+need
+to
+stop
+pls
+
+POST ORDER
+pls
+stop
+to
+need
+Trees
+Search
+Binary
+
+COPY CTOR:
+
+DELETING pls AND Search: 
+
+BREADTH FIRST
+Binary
+Trees
+need
+to
+stop
+
+
+INTEGER ERROR TESTING
+
+Delete from an empty tree...
+ERROR: The tree is empty.
+Trying to Delete a node that doesn't exist...
+ERROR: Node not found.
+Traverse an empty tree... 
+ERROR: Nothing in the tree.
+
+
+STRING ERROR TESTING
+
+Delete from an empty tree...
+ERROR: The tree is empty.
+Trying to Delete a node that doesn't exist...
+ERROR: Node not found.
+Traverse an empty tree... 
+ERROR: Nothing in the tree.
+~/Documents/CST211/CST211/Midterm/Q2$ ./run.sh 
+g++ -std=c++2b -fsanitize=leak -g -o q2 CST211MidtermBST.cpp Exception.h TreeNode.h BinarySearchTree.h
+IN ORDER
+11
+12
+15
+18
+20
+25
+30
+PRE ORDER
+20
+15
+12
+11
+18
+25
+30
+POST ORDER
+11
+12
+18
+15
+30
+25
+20
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+11
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+BREADTH FIRST
+20
+15
+30
+12
+18
+11
+BREADTH FIRST
+20
+15
+25
+12
+18
+30
+11
+What is the height of the tree t2? 3
+Deleting a Node with two children...
+What is the height of the tree t2? 2
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+COPY CONSTRUCTOR:
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+OP=:
+BREADTH FIRST
+20
+12
+25
+11
+18
+30
+What is the height of the tree t1? 5
+Purging t2...
+
+
+STRINGS!!
+
+IN ORDER
+Binary
+Search
+Trees
+need
+pls
+stop
+to
+
+BREADTH FIRST
+Binary
+Search
+Trees
+need
+to
+stop
+pls
+
+PRE ORDER
+Binary
+Search
+Trees
+need
+to
+stop
+pls
+
+POST ORDER
+pls
+stop
+to
+need
+Trees
+Search
+Binary
+
+COPY CTOR:
+
+DELETING pls AND Search: 
+
+BREADTH FIRST
+Binary
+Trees
+need
+to
+stop
+
+
+INTEGER ERROR TESTING
+
+Delete from an empty tree...
+ERROR: The tree is empty.
+Trying to Delete a node that doesn't exist...
+ERROR: Node not found.
+Traverse an empty tree... 
+ERROR: Nothing in the tree.
+
+
+STRING ERROR TESTING
+
+Delete from an empty tree...
+ERROR: The tree is empty.
+Trying to Delete a node that doesn't exist...
+ERROR: Node not found.
+Traverse an empty tree... 
+ERROR: Nothing in the tree.
+
+
+3. 
+The first error I fixed was on like 51, in the implmentation of the default constructor.
+It did not initilize the root to mullptr, causeing the the insert function to try to access
+unititlized memory.
+I added ': m_root(nullptr)' to the default constructor.
+
+The second error was in the move and copy constructors. 
+They again did not initilize the root to nullptr, causing the purge function to try to access 
+unititlized memory. 
+
+The final error was with the pre, post, and in order traversal functions.
+None of them traversed to the left at all. I added a recursive call to the left child in each
+of the functions.

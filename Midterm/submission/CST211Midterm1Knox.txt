@@ -1,0 +1,94 @@
+1. included in zip
+2. 
+*** TESTING A MULTIDIMENSIONAL ARRAY OF INTEGERS ***
+ Creating an Array with the default constructor.
+ Creating an Array with the 2-arg constructor: 5 rows, 6 columns.
+      5 5
+ Testing the setColumn method.
+      simba now has 3 columns.
+ Testing the setRow method.
+      simba now has 7 rows.
+      simba's row/column value is: 
+      7 3
+ Testing assigning values using the [x][y] method.
+      mufasa's value is: 
+      0 0 0 0 0 0 
+      0 1 2 3 4 5 
+      0 2 4 6 8 10 
+ Testing the op=. Assigning simba with mufasa's values.
+      simba's value is now:
+      0 0 0 0 0 0 
+      0 1 2 3 4 5 
+      0 2 4 6 8 10 
+ Testing the copy constructor.
+      pumba's row/column value is: 
+      4 7
+      timon's row/column value is: 
+      4 7
+ Testing the 1-arg constructor.
+      rafiki's row/column value is: 
+      5 0
+ Testing reducing timon's columns to 3.
+      timon's row/column value is: 
+      4 3
+*** TESTING A MULTIDIMENSIONAL ARRAY OF STRINGS ***
+ Creating an Array with the default constructor.
+ Creating an Array with the 2-arg constructor: 5 rows, 6 columns.
+      5 5
+ Testing the setColumn method.
+      steve now has 3 columns.
+ Testing the setRow method.
+      steve now has 7 rows.
+      steve's row/column value is: 
+      7 3
+ Testing assigning values using the [x][y] method.
+      thor's value is: 
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+ Testing the op=. Assigning simba with mufasa's values.
+      steve's value is now:
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! 
+ Testing the copy constructor.
+      hawkeye's row/column value is: 
+      4 7
+      widow's row/column value is: 
+      4 7
+ Testing the 1-arg constructor.
+      hulk's row/column value is: 
+      5 0
+ Testing reducing timon's columns to 3.
+      widow's row/column value is: 
+      4 3
+      widow has been assigned steve's value, 
+      but her row value is reduced to 2, and 
+      her column value has been increasedto 7:
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS!  
+      AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS! AVENGERS!  
+*** TESTING A CONSTANT MULTIDIMENSIONAL ARRAY OF INTEGERS ***
+ Testing mantaray's value as a constant Array2D object.
+      mantaray's value is:
+      0 1 2 3 4 5 
+      1 2 3 4 5 6 
+      2 3 4 5 6 7 
+      3 4 5 6 7 8 
+      4 5 6 7 8 9 
+ Testing the Select method for a const object. Accessing (3, 3).
+      The value at (3, 3) is: 
+      6
+*** TESTING EXCEPTION CONDITIONS ***
+>> 1) Attempting to create a negative array.
+      EXCEPTION: Cannot have a row or column of a negative value!
+2) Setting a Row to a negative value after creation.
+      EXCEPTION: Cannot have a row value less then zero.
+3) Setting a Column to a negative value after creation.
+      EXCEPTION: Cannot have a column value less then zero.
+4) Selecting an element outside the bounds of the Array.
+      EXCEPTION: Cannot access a row that is out of bounds.
+
+3. 
+Select is not tested for ints or strings, but is tested for exeptions
+The move operators are not tested either, only the copy operators
+
