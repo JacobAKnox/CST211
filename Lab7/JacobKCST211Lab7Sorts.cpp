@@ -9,11 +9,17 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+#include <fstream>
+using std::ofstream;
+
 #include <vector>
 using std::vector;
 
 #include <chrono>
 #include <random>
+
+#include <string>
+using std::to_string;
 
 // memory lead detection disabled becasue my compiler dosn't support this version
 // i used a compiler flag in gcc
@@ -53,6 +59,17 @@ void test_shell_sort(vector<int>& random_data);
 void test_iterative_heap_sort(vector<int>& random_data);
 void test_merge_sort(vector<int>& random_data);
 void test_quick_sort(vector<int>& random_data);
+
+ofstream file;  // file to write to
+
+template <class... T>
+void print(T... args) {
+	// print to the console and to the file
+	for (auto arg : {args...}) {
+		cout << arg;
+		file << arg;
+	}
+}
 
 test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort, test_selection_sort, test_insertion_sort,
                               test_shell_sort, test_iterative_heap_sort, test_merge_sort, test_quick_sort};
@@ -95,18 +112,22 @@ int main(int argc, char* argv[]) {
   for (int i = 0; i < length; i++)
     random_data.push_back(distrib(gen));
 
+  file.open("output.txt");
+
   // show random data at 10% intervals
-  cout << "Random data:" << endl;
+  print("Random data: ");
   for (int i = 0; i < random_data.size(); i += random_data.size() / PRINT_PERCENT) {
-    cout << random_data[i] << " ";
+    print(random_data[i]);
+		print(" ");
   }
-  cout << endl
-       << endl;
+	print("\n", "\n");
 
   // run the tests
   for (test_func test : test_functions) {
     test(random_data);
   }
+
+  file.close();
 
   return 0;
 }
@@ -125,15 +146,15 @@ void generic_tester(vector<int> random_data, c_array_sort c_array_sort, array_so
   vector<int> vector = setup_vector(data);
 
   // Sort the c-array
-  cout << "Sorting c-array" << endl;
+  print("Sorting c-array", "\n");
   time_c_array_sort(bubble_sort_c_array, c_array, data.size());
 
   // Sort the Array
-  cout << "Sorting Array" << endl;
+  print("Sorting Array", "\n");
   time_array_sort(bubble_sort_array, array);
 
   // Sort the vector
-  cout << "Sorting vector" << endl;
+	print("Sorting vector", "\n");
   time_vector_sort(bubble_sort_vector, vector);
 
   // Free the c-array
@@ -142,43 +163,43 @@ void generic_tester(vector<int> random_data, c_array_sort c_array_sort, array_so
 }
 
 void test_bubble_sort(vector<int>& random_data) {
-  cout << "Testing bubble sort" << endl;
+  print("Testing bubble sort", "\n");
   generic_tester(random_data, bubble_sort_c_array, bubble_sort_array, bubble_sort_vector);
 }
 
 void test_flagged_bubble_sort(vector<int>& random_data) {
-  cout << "Testing flagged bubble sort" << endl;
+  print("Testing flagged bubble sort", "\n");
   generic_tester(random_data, flagged_bubble_sort_c_array, flagged_bubble_sort_array, flagged_bubble_sort_vector);
 }
 
 void test_selection_sort(vector<int>& random_data) {
-  cout << "Testing selection sort" << endl;
+  print("Testing selection sort", "\n");
   generic_tester(random_data, selection_sort_c_array, selection_sort_array, selection_sort_vector);
 }
 
 void test_insertion_sort(vector<int>& random_data) {
-  cout << "Testing insertion sort" << endl;
+  print("Testing insertion sort", "\n");
   generic_tester(random_data, insertion_sort_c_array, insertion_sort_array, insertion_sort_vector);
 }
 
 void test_shell_sort(vector<int>& random_data) {
-	cout << "Testing shell sort" << endl;
-	generic_tester(random_data, shell_sort_c_array, shell_sort_array, shell_sort_vector);
+  print("Testing shell sort", "\n");
+  generic_tester(random_data, shell_sort_c_array, shell_sort_array, shell_sort_vector);
 }
 
 void test_iterative_heap_sort(vector<int>& random_data) {
-	cout << "Testing iterative heap sort" << endl;
-	generic_tester(random_data, iterative_heap_sort_c_array, iterative_heap_sort_array, iterative_heap_sort_vector);
+  print("Testing iterative heap sort", "\n");
+  generic_tester(random_data, iterative_heap_sort_c_array, iterative_heap_sort_array, iterative_heap_sort_vector);
 }
 
 void test_merge_sort(vector<int>& random_data) {
-	cout << "Testing merge sort" << endl;
-	generic_tester(random_data, merge_sort_c_array, merge_sort_array, merge_sort_vector);
+  print("Testing merge sort", "\n");
+  generic_tester(random_data, merge_sort_c_array, merge_sort_array, merge_sort_vector);
 }
 
 void test_quick_sort(vector<int>& random_data) {
-	cout << "Testing quick sort" << endl;
-	generic_tester(random_data, quick_sort_c_array, bubble_sort_array, bubble_sort_vector);
+  print("Testing quick sort", "\n");
+  generic_tester(random_data, quick_sort_c_array, bubble_sort_array, bubble_sort_vector);
 }
 
 Array<int> setup_array(vector<int> random_data) {
@@ -225,22 +246,25 @@ void time_c_array_sort(c_array_sort sort, int* array, int length) {
   std::chrono::duration<double> elapsed = end - start;
 
   // Print the elapsed time
-  cout << "Elapsed time: " << elapsed.count() << " seconds" << endl;
+	print("Elapsed time: ");
+	print(elapsed.count());
+	print(" seconds\n");
 
   // Print elements at 10% intervals
-  cout << "Elements at 10% intervals: " << endl;
+	print("Elements at 10% intervals: ", "\n");
   int last = 0;
   for (int i = 0; i < length; i += length / PRINT_PERCENT) {
-    cout << array[i] << " ";
+		print(to_string(array[i]));
+		print(" ");
     // check if the array is sorted
     if (array[i] < last) {
-      cout << "ERROR: array not sorted" << endl;
+			print("ERROR: array not sorted", "\n");
       // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = array[i];
   }
-  cout << endl;
+  print("\n");
 }
 
 void time_array_sort(array_sort sort, Array<int>& array) {
@@ -257,22 +281,25 @@ void time_array_sort(array_sort sort, Array<int>& array) {
   std::chrono::duration<double> elapsed = end - start;
 
   // Print the elapsed time
-  cout << "Elapsed time: " << elapsed.count() << " seconds" << endl;
+  print("Elapsed time: ");
+  print(elapsed.count());
+  print(" seconds\n");
 
   // Print elements at 10% intervals
-  cout << "Elements at 10% intervals: " << endl;
+	print("Elements at 10% intervals: ", "\n");
   int last = 0;
   for (int i = 0; i < array.getLength(); i += array.getLength() / PRINT_PERCENT) {
-    cout << array[i] << " ";
+		print(to_string(array[i]));
+		print(" ");
     // check if the array is sorted
     if (array[i] < last) {
-      cout << "ERROR: array not sorted" << endl;
+			print("ERROR: array not sorted", "\n");
       // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = array[i];
   }
-  cout << endl;
+  print("\n");
 }
 
 void time_vector_sort(vector_sort sort, vector<int>& vector) {
@@ -289,20 +316,23 @@ void time_vector_sort(vector_sort sort, vector<int>& vector) {
   std::chrono::duration<double> elapsed = end - start;
 
   // Print the elapsed time
-  cout << "Elapsed time: " << elapsed.count() << " seconds" << endl;
+  print("Elapsed time: ");
+  print(elapsed.count());
+  print(" seconds\n");
 
   // print elements at 10% intervals
-  cout << "Elements at 10% intervals: " << endl;
+	print("Elements at 10% intervals: ", "\n");
   int last = 0;
   for (int i = 0; i < vector.size(); i += vector.size() / PRINT_PERCENT) {
-    cout << vector[i] << " ";
+		print(to_string(vector[i]));
+		print(" ");
     // check if the array is sorted
     if (vector[i] < last) {
-      cout << "ERROR: array not sorted" << endl;
+			print("ERROR: array not sorted", "\n");
       // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = vector[i];
   }
-  cout << endl;
+	print("\n");
 }

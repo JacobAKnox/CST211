@@ -1,0 +1,106 @@
+Random data: 42 100 73 94 1 13 31 100 15 24 
+
+Testing bubble sort
+Sorting c-array
+Elapsed time: 7.61e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 2.002e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 1.393e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing flagged bubble sort
+Sorting c-array
+Elapsed time: 5.83e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.917e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 8.53e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing selection sort
+Sorting c-array
+Elapsed time: 3.33e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.233e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 5.77e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing insertion sort
+Sorting c-array
+Elapsed time: 2.71e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.856e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 1.01e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing shell sort
+Sorting c-array
+Elapsed time: 3.91e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.809e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 9.14e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing iterative heap sort
+Sorting c-array
+Elapsed time: 3.26e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.146e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 5.8e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing merge sort
+Sorting c-array
+Elapsed time: 3.94e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.185e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 5.61e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Testing quick sort
+Sorting c-array
+Elapsed time: 3.42e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting Array
+Elapsed time: 1.941e-06 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
+Sorting vector
+Elapsed time: 9.8e-07 seconds
+Elements at 10% intervals: 
+1 13 15 24 31 42 73 94 100 100 
