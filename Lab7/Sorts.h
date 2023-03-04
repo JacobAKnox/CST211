@@ -40,7 +40,6 @@ void heapify_array(Array<int>& array, int length, int i);
 void heapify_c_array(int* array, int length, int i);
 void heapify_vector(std::vector<int>& vector, int length, int i);
 
-
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -297,106 +296,107 @@ void shell_sort_vector(std::vector<int>& vector) {
 void iterative_heap_sort_array(Array<int>& array) {
   int temp;
   int length = array.getLength();
+  // heapify the array
+  for (int i = length / 2 - 1; i >= 0; i--) {
+    heapify_array(array, length, i);
+  }
   // sort the array
   for (int i = length - 1; i >= 0; i--) {
-    // make the array have the max heap property
-    heapify_array(array, length, i);
     // swap the root with the last element
     temp = array[0];
     array[0] = array[i];
     array[i] = temp;
+    // make the array have the max heap property
+    heapify_array(array, i, 0);
   }
 }
 
 void iterative_heap_sort_c_array(int* array, int length) {
   int temp;
-  // sort the array
-  for (int i = length - 1; i >= 0; i--) {
-    // make the array have the max heap property
+  for (int i = length / 2 - 1; i >= 0; i--) {
     heapify_c_array(array, length, i);
-    // swap the root with the last element
+  }
+  for (int i = length - 1; i >= 0; i--) {
     temp = array[0];
     array[0] = array[i];
     array[i] = temp;
+    heapify_c_array(array, i, 0);
   }
 }
 
 void iterative_heap_sort_vector(std::vector<int>& vector) {
   int temp;
   int length = vector.size();
-  // sort the array
-  for (int i = length - 1; i >= 0; i--) {
-    // make the array have the max heap property
+  for (int i = length / 2 - 1; i >= 0; i--) {
     heapify_vector(vector, length, i);
-    // swap the root with the last element
+  }
+  for (int i = length - 1; i >= 0; i--) {
     temp = vector[0];
     vector[0] = vector[i];
     vector[i] = temp;
+    heapify_vector(vector, i, 0);
   }
 }
 
 // heap helper functions
 void heapify_array(Array<int>& array, int length, int i) {
-  int temp;
-  int largest = i;
-  int left = 2 * i + 1; // left child
-  int right = 2 * i + 2; // right child
-  // if the left child is larger than the root
-  if (left < length && array[left] > array[largest]) {
-    // the left child is the largest
-    largest = left;
+  int top = array[i];
+  int larger = i;
+  while (i < length / 2) { // swap each element with its larger child
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    // find the larger child
+    if (right < length && array[right] > array[left]) {
+      larger = right;
+    } else {
+      larger = left;
+    }
+    // swap the element with its larger child
+    if (top >= array[i])
+      break;
+    array[i] = array[larger];
+    i = larger;
   }
-  // if the right child is larger than the root
-  if (right < length && array[right] > array[largest]) {
-    // the right child is the largest
-    largest = right;
-  }
-  // swap the largest element with the root
-  if (largest != i) {
-    temp = array[i];
-    array[i] = array[largest];
-    array[largest] = temp;
-    // heapify the sub-tree
-    heapify_array(array, length, largest);
-  }
+  // place the element in the correct position
+  array[i] = top;
 }
 
 void heapify_c_array(int* array, int length, int i) {
-  int temp;
-  int largest = i;
-  int left = 2 * i + 1;
-  int right = 2 * i + 2; 
-  if (left < length && array[left] > array[largest]) {
-    largest = left;
+  int top = array[i];
+  int larger = i;
+  while (i < length / 2) {
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    if (right < length && array[right] > array[left]) {
+      larger = right;
+    } else {
+      larger = left;
+    }
+    if (top >= array[i])
+      break;
+    array[i] = array[larger];
+    i = larger;
   }
-  if (right < length && array[right] > array[largest]) {
-    largest = right;
-  }
-  if (largest != i) {
-    temp = array[i];
-    array[i] = array[largest];
-    array[largest] = temp;
-    heapify_c_array(array, length, largest);
-  }
+  array[i] = top;
 }
 
 void heapify_vector(std::vector<int>& vector, int length, int i) {
-  int temp;
-  int largest = i;
-  int left = 2 * i + 1;
-  int right = 2 * i + 2;
-  if (left < length && vector[left] > vector[largest]) {
-    largest = left;
+  int top = vector[i];
+  int larger = i;
+  while (i < length / 2) {
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    if (right < length && vector[right] > vector[left]) {
+      larger = right;
+    } else {
+      larger = left;
+    }
+    if (top >= vector[i])
+      break;
+    vector[i] = vector[larger];
+    i = larger;
   }
-  if (right < length && vector[right] > vector[largest]) {
-    largest = right;
-  }
-  if (largest != i) {
-    temp = vector[i];
-    vector[i] = vector[largest];
-    vector[largest] = temp;
-    heapify_vector(vector, length, largest);
-  }
+  vector[i] = top;
 }
 
 #endif  // SORTS_H
