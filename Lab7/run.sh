@@ -1,4 +1,4 @@
 #!/bin/bash
 
 make
-./sorts
+./sorts 10
