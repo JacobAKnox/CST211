@@ -40,6 +40,21 @@ void heapify_array(Array<int>& array, int length, int i);
 void heapify_c_array(int* array, int length, int i);
 void heapify_vector(std::vector<int>& vector, int length, int i);
 
+// merge sort base calls
+void merge_sort_array(Array<int>& array);
+void merge_sort_c_array(int* array, int length);
+void merge_sort_vector(std::vector<int>& vector);
+
+// merge sort recursive calls
+void merge_sort_array(Array<int>& array, int left, int right);
+void merge_sort_c_array(int* array, int left, int right);
+void merge_sort_vector(std::vector<int>& vector, int left, int right);
+
+// merge helper functions
+void merge_array(Array<int>& array, int left, int middle, int right);
+void merge_c_array(int* array, int left, int middle, int right);
+void merge_vector(std::vector<int>& vector, int left, int middle, int right);
+
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -342,7 +357,7 @@ void iterative_heap_sort_vector(std::vector<int>& vector) {
 void heapify_array(Array<int>& array, int length, int i) {
   int top = array[i];
   int larger = i;
-  while (i < length / 2) { // swap each element with its larger child
+  while (i < length / 2) {  // swap each element with its larger child
     int left = 2 * i + 1;
     int right = 2 * i + 2;
     // find the larger child
@@ -397,6 +412,155 @@ void heapify_vector(std::vector<int>& vector, int length, int i) {
     i = larger;
   }
   vector[i] = top;
+}
+
+// merge sorts
+void merge_sort_array(Array<int>& array) {
+  // call the recursive function on the entire array
+  merge_sort_array(array, 0, array.getLength() - 1);
+}
+
+void merge_sort_c_array(int* array, int length) {
+  merge_sort_c_array(array, 0, length - 1);
+}
+
+void merge_sort_vector(std::vector<int>& vector) {
+  merge_sort_vector(vector, 0, vector.size() - 1);
+}
+
+// recursive calls
+void merge_sort_array(Array<int>& array, int left, int right) {
+  // if there are less than two elements, the array is sorted
+  if (left < right) {
+    // find the middle of the array
+    int middle = (left + right) / 2;
+    // sort the left and right halves of the array
+    merge_sort_array(array, left, middle);
+    merge_sort_array(array, middle + 1, right);
+    // merge the two halves
+    merge_array(array, left, middle, right);
+  }
+}
+
+void merge_sort_c_array(int* array, int left, int right) {
+  if (left < right) {
+    int middle = (left + right) / 2;
+    merge_sort_c_array(array, left, middle);
+    merge_sort_c_array(array, middle + 1, right);
+    merge_c_array(array, left, middle, right);
+  }
+}
+
+void merge_sort_vector(std::vector<int>& vector, int left, int right) {
+  if (left < right) {
+    int middle = (left + right) / 2;
+    merge_sort_vector(vector, left, middle);
+    merge_sort_vector(vector, middle + 1, right);
+    merge_vector(vector, left, middle, right);
+  }
+}
+
+// merge helper functions
+void merge_array(Array<int>& array, int left, int middle, int right) {
+  // create a temporary array to hold the sorted elements
+  Array<int> temp(right - left + 1);
+  // set the indices for the left and right halves
+  int left_index = left;
+  int right_index = middle + 1;
+  // set the index for the temporary array
+  int temp_index = 0;
+  // merge the two halves
+  while (left_index <= middle && right_index <= right) {
+    // copy the smaller element to the temporary array
+    if (array[left_index] < array[right_index]) {
+      temp[temp_index] = array[left_index];
+      // increment the index of the left half
+      left_index++;
+    } else {
+      temp[temp_index] = array[right_index];
+      // increment the index of the right half
+      right_index++;
+    }
+    // increment the index of the temporary array
+    temp_index++;
+  }
+  // copy the remaining elements from the left half
+  while (left_index <= middle) {
+    temp[temp_index] = array[left_index];
+    left_index++;
+    temp_index++;
+  }
+  // copy the remaining elements from the right half
+  while (right_index <= right) {
+    temp[temp_index] = array[right_index];
+    right_index++;
+    temp_index++;
+  }
+  // copy the sorted elements from the temporary array to the original array
+  for (int i = left; i <= right; i++) {
+    array[i] = temp[i - left];
+  }
+}
+
+void merge_c_array(int* array, int left, int middle, int right) {
+  int* temp = new int[right - left + 1];
+  int left_index = left;
+  int right_index = middle + 1;
+  int temp_index = 0;
+  while (left_index <= middle && right_index <= right) {
+    if (array[left_index] < array[right_index]) {
+      temp[temp_index] = array[left_index];
+      left_index++;
+    } else {
+      temp[temp_index] = array[right_index];
+      right_index++;
+    }
+    temp_index++;
+  }
+  while (left_index <= middle) {
+    temp[temp_index] = array[left_index];
+    left_index++;
+    temp_index++;
+  }
+  while (right_index <= right) {
+    temp[temp_index] = array[right_index];
+    right_index++;
+    temp_index++;
+  }
+  for (int i = left; i <= right; i++) {
+    array[i] = temp[i - left];
+  }
+  delete[] temp;
+}
+
+void merge_vector(std::vector<int>& vector, int left, int middle, int right) {
+  std::vector<int> temp(right - left + 1);
+  int left_index = left;
+  int right_index = middle + 1;
+  int temp_index = 0;
+  while (left_index <= middle && right_index <= right) {
+    if (vector[left_index] < vector[right_index]) {
+      temp[temp_index] = vector[left_index];
+      left_index++;
+    } else {
+      temp[temp_index] = vector[right_index];
+      right_index++;
+    }
+    temp_index++;
+  }
+  while (left_index <= middle) {
+    temp[temp_index] = vector[left_index];
+    left_index++;
+    temp_index++;
+  }
+  while (right_index <= right) {
+    temp[temp_index] = vector[right_index];
+    right_index++;
+    temp_index++;
+  }
+  for (int i = left; i <= right; i++) {
+    vector[i] = temp[i - left];
+  }
 }
 
 #endif  // SORTS_H
