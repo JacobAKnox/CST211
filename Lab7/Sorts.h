@@ -15,6 +15,11 @@ void flagged_bubble_sort_array(Array<int>& array);
 void flagged_bubble_sort_c_array(int* array, int length);
 void flagged_bubble_sort_vector(std::vector<int>& vector);
 
+// selection sort
+void selection_sort_array(Array<int>& array);
+void selection_sort_c_array(int* array, int length);
+void selection_sort_vector(std::vector<int>& vector);
+
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -112,6 +117,57 @@ void flagged_bubble_sort_vector(std::vector<int>& vector) {
         swapped = true;
       }
     }
+  }
+}
+
+// selection sorts
+void selection_sort_array(Array<int>& array) {
+  int temp;
+  int length = array.getLength();
+  // loop through the array
+  for (int i = 0; i < length; i++) {
+    // find the smallest element in the unsorted part of the array
+    int smallest = i;
+    for (int j = i + 1; j < length; j++) {
+      if (array[j] < array[smallest]) {
+        smallest = j;
+      }
+    }
+    // swap the smallest element with the first element in the unsorted part
+    temp = array[i];
+    array[i] = array[smallest];
+    array[smallest] = temp;
+  }
+}
+
+void selection_sort_c_array(int* array, int length) {
+  int temp;
+  for (int i = 0; i < length; i++) {
+    int smallest = i;
+    for (int j = i + 1; j < length; j++) {
+      if (array[j] < array[smallest]) {
+        smallest = j;
+      }
+    }
+    temp = array[i];
+    array[i] = array[smallest];
+    array[smallest] = temp;
+  }
+}
+
+void selection_sort_vector(std::vector<int>& vector) {
+  int temp;
+  int length = vector.size();
+  for (int i = 0; i < length; i++) {
+    int smallest = i;
+    for (int j = i + 1; j < length; j++) {
+      if (vector[j] < vector[smallest]) {
+        smallest = j;
+      }
+    }
+    temp = vector[i];
+    vector[i] = vector[smallest];
+    vector[smallest] = temp;
   }
 }
 
