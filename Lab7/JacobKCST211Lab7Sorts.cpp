@@ -50,9 +50,10 @@ void test_flagged_bubble_sort(vector<int>& random_data);
 void test_selection_sort(vector<int>& random_data);
 void test_insertion_sort(vector<int>& random_data);
 void test_shell_sort(vector<int>& random_data);
+void test_iterative_heap_sort(vector<int>& random_data);
 
 test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort, test_selection_sort, test_insertion_sort,
-                              test_shell_sort};
+                              test_shell_sort, test_iterative_heap_sort};
 
 int main(int argc, char* argv[]) {
   // memory leak checking disabled becasue gcc dosen't support these flags
@@ -161,6 +162,11 @@ void test_insertion_sort(vector<int>& random_data) {
 void test_shell_sort(vector<int>& random_data) {
 	cout << "Testing shell sort" << endl;
 	generic_tester(random_data, shell_sort_c_array, shell_sort_array, shell_sort_vector);
+}
+
+void test_iterative_heap_sort(vector<int>& random_data) {
+	cout << "Testing iterative heap sort" << endl;
+	generic_tester(random_data, iterative_heap_sort_c_array, iterative_heap_sort_array, iterative_heap_sort_vector);
 }
 
 Array<int> setup_array(vector<int> random_data) {
