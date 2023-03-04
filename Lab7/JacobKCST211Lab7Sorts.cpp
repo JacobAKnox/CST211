@@ -52,9 +52,10 @@ void test_insertion_sort(vector<int>& random_data);
 void test_shell_sort(vector<int>& random_data);
 void test_iterative_heap_sort(vector<int>& random_data);
 void test_merge_sort(vector<int>& random_data);
+void test_quick_sort(vector<int>& random_data);
 
 test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort, test_selection_sort, test_insertion_sort,
-                              test_shell_sort, test_iterative_heap_sort, test_merge_sort};
+                              test_shell_sort, test_iterative_heap_sort, test_merge_sort, test_quick_sort};
 
 int main(int argc, char* argv[]) {
   // memory leak checking disabled becasue gcc dosen't support these flags
@@ -173,6 +174,11 @@ void test_iterative_heap_sort(vector<int>& random_data) {
 void test_merge_sort(vector<int>& random_data) {
 	cout << "Testing merge sort" << endl;
 	generic_tester(random_data, merge_sort_c_array, merge_sort_array, merge_sort_vector);
+}
+
+void test_quick_sort(vector<int>& random_data) {
+	cout << "Testing quick sort" << endl;
+	generic_tester(random_data, quick_sort_c_array, bubble_sort_array, bubble_sort_vector);
 }
 
 Array<int> setup_array(vector<int> random_data) {

@@ -55,6 +55,21 @@ void merge_array(Array<int>& array, int left, int middle, int right);
 void merge_c_array(int* array, int left, int middle, int right);
 void merge_vector(std::vector<int>& vector, int left, int middle, int right);
 
+// quick sort base calls
+void quick_sort_array(Array<int>& array);
+void quick_sort_c_array(int* array, int length);
+void quick_sort_vector(std::vector<int>& vector);
+
+// quick sort recursive calls
+void quick_sort_array(Array<int>& array, int left, int right);
+void quick_sort_c_array(int* array, int left, int right);
+void quick_sort_vector(std::vector<int>& vector, int left, int right);
+
+// quick sort partition helper function
+int partition_array(Array<int>& array, int left, int right);
+int partition_c_array(int* array, int left, int right);
+int partition_vector(std::vector<int>& vector, int left, int right);
+
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -428,7 +443,7 @@ void merge_sort_vector(std::vector<int>& vector) {
   merge_sort_vector(vector, 0, vector.size() - 1);
 }
 
-// recursive calls
+// merge recursive calls
 void merge_sort_array(Array<int>& array, int left, int right) {
   // if there are less than two elements, the array is sorted
   if (left < right) {
@@ -560,6 +575,126 @@ void merge_vector(std::vector<int>& vector, int left, int middle, int right) {
   }
   for (int i = left; i <= right; i++) {
     vector[i] = temp[i - left];
+  }
+}
+
+// quick sort base calls
+void quick_sort_array(Array<int>& array) {
+  // call the recursive quick sort function
+  quick_sort_array(array, 0, array.getLength() - 1);
+}
+
+void quick_sort_c_array(int* array, int length) {
+  quick_sort_c_array(array, 0, length - 1);
+}
+void quick_sort_vector(std::vector<int>& vector) {
+  quick_sort_vector(vector, 0, vector.size() - 1);
+}
+
+// quick sort recursive calls
+void quick_sort_array(Array<int>& array, int left, int right) {
+  // if there are less than two elements, the array is sorted
+  if (left < right) {
+    // partition the array
+    int pivot = partition_array(array, left, right);
+    // sort the left and right halves of the array
+    quick_sort_array(array, left, pivot);
+    quick_sort_array(array, pivot + 1, right);
+  }
+}
+
+void quick_sort_c_array(int* array, int left, int right) {
+  if (left < right) {
+    int pivot = partition_c_array(array, left, right);
+    quick_sort_c_array(array, left, pivot);
+    quick_sort_c_array(array, pivot + 1, right);
+  }
+}
+
+void quick_sort_vector(std::vector<int>& vector, int left, int right) {
+  if (left < right) {
+    int pivot = partition_vector(vector, left, right);
+    quick_sort_vector(vector, left, pivot);
+    quick_sort_vector(vector, pivot + 1, right);
+  }
+}
+
+// quick sort partition helper function
+int partition_array(Array<int>& array, int left, int right) {
+  // set the pivot to the middle element
+  int pivot = array[(left + right) / 2];
+
+  // left and right indices
+  int left_index = left - 1;
+  int right_index = right + 1;
+
+  // partition the array
+  while (true)
+  {
+    do {
+      // increment the left index until an element greater than the pivot is
+      // found
+      left_index++;
+    } while (array[left_index] < pivot);
+
+    do {
+      // decrement the right index until an element less than the pivot is
+      // found
+      right_index--;
+    } while (array[right_index] > pivot);
+
+    // if the left index is greater than or equal to the right index, the
+    // partition is complete return the right index
+    if (left_index >= right_index) {
+      return right_index;
+    }
+
+    // swap the elements at the left and right indices
+    int temp = array[left_index];
+    array[left_index] = array[right_index];
+    array[right_index] = temp;
+  }
+}
+
+int partition_c_array(int* array, int left, int right) {
+  int pivot = array[(left + right) / 2];
+  int left_index = left - 1;
+  int right_index = right + 1;
+  while (true)
+  {
+    do {
+      left_index++;
+    } while (array[left_index] < pivot);
+    do {
+      right_index--;
+    } while (array[right_index] > pivot);
+    if (left_index >= right_index) {
+      return right_index;
+    }
+    int temp = array[left_index];
+    array[left_index] = array[right_index];
+    array[right_index] = temp;
+  }
+}
+
+int partition_vector(std::vector<int>& vector, int left, int right) {
+  int pivot = vector[(left + right) / 2];
+  int left_index = left - 1;
+  int right_index = right + 1;
+  while (true)
+  {
+    do {
+      left_index++;
+    } while (vector[left_index] < pivot);
+    do {
+      right_index--;
+    } while (vector[right_index] > pivot);
+    if (left_index >= right_index) {
+      return right_index;
+    }
+    int temp = vector[left_index];
+    vector[left_index] = vector[right_index];
+    vector[right_index] = temp;
   }
 }
 
