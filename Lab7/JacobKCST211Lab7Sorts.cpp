@@ -46,8 +46,9 @@ void generic_tester(vector<int> random_data, c_array_sort c_array_sort, array_so
 
 // testing functions
 void test_bubble_sort(vector<int>& random_data);
+void test_flagged_bubble_sort(vector<int>& random_data);
 
-test_func test_functions[] = {test_bubble_sort};
+test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort};
 
 int main(int argc, char* argv[]) {
   // memory leak checking disabled becasue gcc dosen't support these flags
@@ -136,6 +137,11 @@ void generic_tester(vector<int> random_data, c_array_sort c_array_sort, array_so
 void test_bubble_sort(vector<int>& random_data) {
   cout << "Testing bubble sort" << endl;
   generic_tester(random_data, bubble_sort_c_array, bubble_sort_array, bubble_sort_vector);
+}
+
+void test_flagged_bubble_sort(vector<int>& random_data) {
+	cout << "Testing flagged bubble sort" << endl;
+	generic_tester(random_data, flagged_bubble_sort_c_array, flagged_bubble_sort_array, flagged_bubble_sort_vector);
 }
 
 Array<int> setup_array(vector<int> random_data) {
