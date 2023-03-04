@@ -49,8 +49,10 @@ void test_bubble_sort(vector<int>& random_data);
 void test_flagged_bubble_sort(vector<int>& random_data);
 void test_selection_sort(vector<int>& random_data);
 void test_insertion_sort(vector<int>& random_data);
+void test_shell_sort(vector<int>& random_data);
 
-test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort, test_selection_sort, test_insertion_sort};
+test_func test_functions[] = {test_bubble_sort, test_flagged_bubble_sort, test_selection_sort, test_insertion_sort,
+                              test_shell_sort};
 
 int main(int argc, char* argv[]) {
   // memory leak checking disabled becasue gcc dosen't support these flags
@@ -142,18 +144,23 @@ void test_bubble_sort(vector<int>& random_data) {
 }
 
 void test_flagged_bubble_sort(vector<int>& random_data) {
-	cout << "Testing flagged bubble sort" << endl;
-	generic_tester(random_data, flagged_bubble_sort_c_array, flagged_bubble_sort_array, flagged_bubble_sort_vector);
+  cout << "Testing flagged bubble sort" << endl;
+  generic_tester(random_data, flagged_bubble_sort_c_array, flagged_bubble_sort_array, flagged_bubble_sort_vector);
 }
 
 void test_selection_sort(vector<int>& random_data) {
-	cout << "Testing selection sort" << endl;
-	generic_tester(random_data, selection_sort_c_array, selection_sort_array, selection_sort_vector);
+  cout << "Testing selection sort" << endl;
+  generic_tester(random_data, selection_sort_c_array, selection_sort_array, selection_sort_vector);
 }
 
 void test_insertion_sort(vector<int>& random_data) {
-	cout << "Testing insertion sort" << endl;
-	generic_tester(random_data, insertion_sort_c_array, insertion_sort_array, insertion_sort_vector);
+  cout << "Testing insertion sort" << endl;
+  generic_tester(random_data, insertion_sort_c_array, insertion_sort_array, insertion_sort_vector);
+}
+
+void test_shell_sort(vector<int>& random_data) {
+	cout << "Testing shell sort" << endl;
+	generic_tester(random_data, shell_sort_c_array, shell_sort_array, shell_sort_vector);
 }
 
 Array<int> setup_array(vector<int> random_data) {
@@ -207,10 +214,10 @@ void time_c_array_sort(c_array_sort sort, int* array, int length) {
   int last = 0;
   for (int i = 0; i < length; i += length / PRINT_PERCENT) {
     cout << array[i] << " ";
-		// check if the array is sorted
+    // check if the array is sorted
     if (array[i] < last) {
       cout << "ERROR: array not sorted" << endl;
-			// throw an exception to stop the program
+      // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = array[i];
@@ -236,13 +243,13 @@ void time_array_sort(array_sort sort, Array<int>& array) {
 
   // Print elements at 10% intervals
   cout << "Elements at 10% intervals: " << endl;
-	int last = 0;
+  int last = 0;
   for (int i = 0; i < array.getLength(); i += array.getLength() / PRINT_PERCENT) {
     cout << array[i] << " ";
-		// check if the array is sorted
+    // check if the array is sorted
     if (array[i] < last) {
       cout << "ERROR: array not sorted" << endl;
-			// throw an exception to stop the program
+      // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = array[i];
@@ -268,13 +275,13 @@ void time_vector_sort(vector_sort sort, vector<int>& vector) {
 
   // print elements at 10% intervals
   cout << "Elements at 10% intervals: " << endl;
-	int last = 0;
+  int last = 0;
   for (int i = 0; i < vector.size(); i += vector.size() / PRINT_PERCENT) {
     cout << vector[i] << " ";
-		// check if the array is sorted
+    // check if the array is sorted
     if (vector[i] < last) {
       cout << "ERROR: array not sorted" << endl;
-			// throw an exception to stop the program
+      // throw an exception to stop the program
       throw Exception("Array not sorted");
     }
     last = vector[i];

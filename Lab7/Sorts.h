@@ -25,6 +25,12 @@ void insertion_sort_array(Array<int>& array);
 void insertion_sort_c_array(int* array, int length);
 void insertion_sort_vector(std::vector<int>& vector);
 
+// shell sort
+void shell_sort_array(Array<int>& array);
+void shell_sort_c_array(int* array, int length);
+void shell_sort_vector(std::vector<int>& vector);
+
+
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -221,6 +227,57 @@ void insertion_sort_vector(std::vector<int>& vector) {
         vector[j - 1] = temp;
       } else {
         break;
+      }
+    }
+  }
+}
+
+// shell sorts
+void shell_sort_array(Array<int>& array) {
+  int temp;
+  int length = array.getLength();
+  // loop through the array with a gap of 2^k - 1
+  for (int gap = 1; gap < length; gap = 3 * gap + 1) {
+    // loop through the array with the current gap
+    for (int i = gap; i < length; i++) {
+      // insert the element at index i into the sorted part of the array
+      for (int j = i; j >= gap; j -= gap) {
+        if (array[j] < array[j - gap]) {
+          temp = array[j];
+          array[j] = array[j - gap];
+          array[j - gap] = temp;
+        }
+      }
+    }
+  }
+}
+
+void shell_sort_c_array(int* array, int length) {
+  int temp;
+  for (int gap = 1; gap < length; gap = 3 * gap + 1) {
+    for (int i = gap; i < length; i++) {
+      for (int j = i; j >= gap; j -= gap) {
+        if (array[j] < array[j - gap]) {
+          temp = array[j];
+          array[j] = array[j - gap];
+          array[j - gap] = temp;
+        }
+      }
+    }
+  }
+}
+
+void shell_sort_vector(std::vector<int>& vector) {
+  int temp;
+  int length = vector.size();
+  for (int gap = 1; gap < length; gap = 3 * gap + 1) {
+    for (int i = gap; i < length; i++) {
+      for (int j = i; j >= gap; j -= gap) {
+        if (vector[j] < vector[j - gap]) {
+          temp = vector[j];
+          vector[j] = vector[j - gap];
+          vector[j - gap] = temp;
+        }
       }
     }
   }
