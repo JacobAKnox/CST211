@@ -20,6 +20,11 @@ void selection_sort_array(Array<int>& array);
 void selection_sort_c_array(int* array, int length);
 void selection_sort_vector(std::vector<int>& vector);
 
+// insertion sort
+void insertion_sort_array(Array<int>& array);
+void insertion_sort_c_array(int* array, int length);
+void insertion_sort_vector(std::vector<int>& vector);
+
 // bubble sorts
 void bubble_sort_array(Array<int>& array) {
   int temp;
@@ -168,6 +173,56 @@ void selection_sort_vector(std::vector<int>& vector) {
     temp = vector[i];
     vector[i] = vector[smallest];
     vector[smallest] = temp;
+  }
+}
+
+// insertion sorts
+void insertion_sort_array(Array<int>& array) {
+  int temp;
+  int length = array.getLength();
+  // loop through the array
+  for (int i = 1; i < length; i++) {
+    // insert the element at index i into the sorted part of the array
+    for (int j = i; j > 0; j--) {
+      if (array[j] < array[j - 1]) {
+        temp = array[j];
+        array[j] = array[j - 1];
+        array[j - 1] = temp;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
+void insertion_sort_c_array(int* array, int length) {
+  int temp;
+  for (int i = 1; i < length; i++) {
+    for (int j = i; j > 0; j--) {
+      if (array[j] < array[j - 1]) {
+        temp = array[j];
+        array[j] = array[j - 1];
+        array[j - 1] = temp;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
+void insertion_sort_vector(std::vector<int>& vector) {
+  int temp;
+  int length = vector.size();
+  for (int i = 1; i < length; i++) {
+    for (int j = i; j > 0; j--) {
+      if (vector[j] < vector[j - 1]) {
+        temp = vector[j];
+        vector[j] = vector[j - 1];
+        vector[j - 1] = temp;
+      } else {
+        break;
+      }
+    }
   }
 }
 
