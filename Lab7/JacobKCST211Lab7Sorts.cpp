@@ -100,6 +100,12 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  if (length < 1) {
+    // if the length is less than 1
+    cout << "Length must be greater than 0" << endl;
+    return 1;
+  }
+
   // Create a random number generator
   std::mt19937 gen(1);                                      // use a fixed seed for repeatability
                                                             // use a rang 10x bigger than the length of the array to avoid too many duplicates

@@ -1,106 +1,106 @@
-Random data: 42 100 73 94 1 13 31 100 15 24 
+Random data: 41703 8749 32581 14319 57698 95912 79349 93454 35885 68708 
 
 Testing bubble sort
 Sorting c-array
-Elapsed time: 7.61e-07 seconds
+Elapsed time: 0.549307 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 2.002e-06 seconds
+Elapsed time: 2.43299 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 1.393e-06 seconds
+Elapsed time: 1.26734 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing flagged bubble sort
 Sorting c-array
-Elapsed time: 5.83e-07 seconds
+Elapsed time: 0.532939 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.917e-06 seconds
+Elapsed time: 2.42841 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 8.53e-07 seconds
+Elapsed time: 1.26758 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing selection sort
 Sorting c-array
-Elapsed time: 3.33e-07 seconds
+Elapsed time: 0.535065 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.233e-06 seconds
+Elapsed time: 2.44053 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 5.77e-07 seconds
+Elapsed time: 1.27087 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing insertion sort
 Sorting c-array
-Elapsed time: 2.71e-07 seconds
+Elapsed time: 0.533177 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.856e-06 seconds
+Elapsed time: 2.43164 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 1.01e-06 seconds
+Elapsed time: 1.26807 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing shell sort
 Sorting c-array
-Elapsed time: 3.91e-07 seconds
+Elapsed time: 0.533684 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.809e-06 seconds
+Elapsed time: 2.43809 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 9.14e-07 seconds
+Elapsed time: 1.27023 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing iterative heap sort
 Sorting c-array
-Elapsed time: 3.26e-07 seconds
+Elapsed time: 0.535979 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.146e-06 seconds
+Elapsed time: 2.43405 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 5.8e-07 seconds
+Elapsed time: 1.2898 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing merge sort
 Sorting c-array
-Elapsed time: 3.94e-07 seconds
+Elapsed time: 0.532836 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.185e-06 seconds
+Elapsed time: 2.43337 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 5.61e-07 seconds
+Elapsed time: 1.26657 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Testing quick sort
 Sorting c-array
-Elapsed time: 3.42e-07 seconds
+Elapsed time: 0.534768 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting Array
-Elapsed time: 1.941e-06 seconds
+Elapsed time: 2.43672 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
 Sorting vector
-Elapsed time: 9.8e-07 seconds
+Elapsed time: 1.2672 seconds
 Elements at 10% intervals: 
-1 13 15 24 31 42 73 94 100 100 
+10 9941 20028 29963 40237 50301 59774 70054 80276 90157 
