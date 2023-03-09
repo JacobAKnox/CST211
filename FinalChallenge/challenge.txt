@@ -1,0 +1,7 @@
+Implement pigeonhole sort for a c-array, your array implementation, or std::vector of integers.
+https://en.wikipedia.org/wiki/Pigeonhole_sort.
+
+Run the sort on two sets 10000 random integers and time how long each takes.
+One set should be 1-1000, the other 1-100,000.
+
+Print every 1000th element of the sorted array along with the time it took to sort.

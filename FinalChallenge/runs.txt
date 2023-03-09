@@ -1,0 +1,12 @@
+$ ./challenge
+Every 1000th element in small range:
+418 326 577 794 359 679 658 178 365 241 
+Small range sort took 0.000171749 seconds
+Every 1000th number:
+1 100 200 294 401 502 596 696 797 896 
+
+Every 1000th element in large range:
+99719 47859 66055 16952 33879 40133 79928 93381 25956 64039 
+Large range sort took 0.000880199 seconds
+Every 1000th number:
+18 9763 20144 30231 40599 50434 59841 70187 80486 90407 
