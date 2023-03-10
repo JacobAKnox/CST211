@@ -29,7 +29,7 @@ class HashTable {
     vector<vector<pair<K, V>>> new_table;
     new_table.resize(m_max_size);
     // move all the values to the new table
-    for (size_t i = 0; i < m_max_size; ++i) {
+    for (size_t i = 0; i < m_max_size/2; ++i) {
       for (pair<K, V>& p : table[i]) {
         size_t pos = hash(p.first) % (m_max_size);
         new_table[pos].push_back(p);

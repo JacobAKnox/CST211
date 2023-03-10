@@ -28,10 +28,12 @@ using std::to_string;
 //  #include <conio.h>
 #include "Array.h"
 #include "BST.h"
-#include "Exception.h"
 #include "Hash.h"
 #include "List.h"
+#include "LNode.h"
 #include "Queue.h"
+
+#include "Exception.h"
 
 // i picked a semi random word to search for from the file
 const string TEST_WORD = "sheets";
@@ -42,13 +44,13 @@ size_t hash_func(const string &s) {
   return func(s);
 }
 
-typedef void (*testing_func)(vector<string> &);
+typedef void (*testing_func)(const vector<string> &);
 
-void test_array(vector<string> &data);
-void test_list(vector<string> &data);
-void test_bst(vector<string> &data);
-void test_hash(vector<string> &data);
-void test_queue(vector<string> &data);
+void test_array(const vector<string> &data);
+void test_list(const vector<string> &data);
+void test_bst(const vector<string> &data);
+void test_hash(const vector<string> &data);
+void test_queue(const vector<string> &data);
 
 testing_func funcs[] = {test_array, test_list, test_bst, test_hash, test_queue};
 
@@ -92,7 +94,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void test_array(vector<string> &data) {
+void test_array(const vector<string> &data) {
   // create an array of the same size as the vector
   Array<string> array(data.size());
 
@@ -125,7 +127,136 @@ void test_array(vector<string> &data) {
   cout << "Array search time: " << duration.count() << " microseconds" << endl << endl;
 }
 
-void test_list(vector<string> &data) {}
-void test_bst(vector<string> &data) {}
-void test_hash(vector<string> &data) {}
-void test_queue(vector<string> &data) {}
+void test_list(const vector<string> &data) {
+  // create a list
+  List<string> list;
+
+  cout << "Testing List" << endl;
+  // start the timer
+  auto start = std::chrono::high_resolution_clock::now();
+  // add the data to the list
+  for (int i = 0; i < data.size(); i++) {
+    list.Append(data[i]);
+  }
+  // stop the timer
+  auto end = std::chrono::high_resolution_clock::now();
+  // calculate the time
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "List add time: " << duration.count() << " microseconds" << endl;
+
+  // start the timer
+  start = std::chrono::high_resolution_clock::now();
+  // search for the test word
+  LNode<string> *node = list.getHead();
+  while (node != nullptr) {
+    if (node->Value() == TEST_WORD) {
+      break;
+    }
+    node = node->Next();
+  }
+  // stop the timer
+  end = std::chrono::high_resolution_clock::now();
+
+  // calculate the time
+  duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "List search time: " << duration.count() << " microseconds" << endl << endl;
+}
+
+void test_bst(const vector<string> &data) {
+  // create a bst
+  BST<string> bst;
+
+  cout << "Testing BST" << endl;
+  // start the timer
+  auto start = std::chrono::high_resolution_clock::now();
+  // add the data to the bst
+  for (int i = 0; i < data.size(); i++) {
+    try {
+      bst.Insert(data[i]);
+    } catch (Exception &e) {
+      // ignore duplicate words
+    }
+  }
+  // stop the timer
+  auto end = std::chrono::high_resolution_clock::now();
+  // calculate the time
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "BST add time: " << duration.count() << " microseconds" << endl;
+
+  // start the timer
+  start = std::chrono::high_resolution_clock::now();
+  // search for the test word
+  bst.Contains(TEST_WORD);
+  // stop the timer
+  end = std::chrono::high_resolution_clock::now();
+
+  // calculate the time
+  duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "BST search time: " << duration.count() << " microseconds" << endl << endl;
+}
+
+void test_hash(const vector<string> &data) {
+  // create a hash table
+  HashTable<string, int> hash{hash_func};
+
+  cout << "Testing Hash" << endl;
+  // start the timer
+  auto start = std::chrono::high_resolution_clock::now();
+  // add the data to the hash table
+  for (int i = 0; i < data.size(); i++) {
+    if (hash.contains(data[i])) {
+      hash[data[i]]++;
+      continue;
+    }
+    hash.Add(data[i], 1);
+  }
+  // stop the timer
+  auto end = std::chrono::high_resolution_clock::now();
+  // calculate the time
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "Hash add time: " << duration.count() << " microseconds" << endl;
+
+  // start the timer
+  start = std::chrono::high_resolution_clock::now();
+  // search for the test word
+  int count = hash[TEST_WORD];
+  // stop the timer
+  end = std::chrono::high_resolution_clock::now();
+
+  // calculate the time
+  duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "Hash search time: " << duration.count() << " microseconds" << endl << endl;
+}
+
+void test_queue(const vector<string> &data) {
+  // create a queue
+  Queue<string> queue{(int) data.size()};
+
+  cout << "Testing Queue" << endl;
+  // start the timer
+  auto start = std::chrono::high_resolution_clock::now();
+  // add the data to the queue
+  for (int i = 0; i < data.size(); i++) {
+    queue.Enqueue(data[i]);
+  }
+  // stop the timer
+  auto end = std::chrono::high_resolution_clock::now();
+  // calculate the time
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "Queue add time: " << duration.count() << " microseconds" << endl;
+
+  // start the timer
+  start = std::chrono::high_resolution_clock::now();
+  // search for the test word
+  while (!queue.isEmpty()) {
+    if (queue.Dequeue() == TEST_WORD) {
+      break;
+    }
+  }
+  // stop the timer
+  end = std::chrono::high_resolution_clock::now();
+
+  // calculate the time
+  duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  cout << "Queue search time: " << duration.count() << " microseconds" << endl << endl;
+}

@@ -1,0 +1,22 @@
+$ ./sorts frankenstein.txt
+Testing with 78094 words
+
+Testing Array
+Array add time: 4520 microseconds
+Array search time: 29 microseconds
+
+Testing List
+List add time: 21674 microseconds
+List search time: 31 microseconds
+
+Testing BST
+BST add time: 448801 microseconds
+BST search time: 1 microseconds
+
+Testing Hash
+Hash add time: 56755 microseconds
+Hash search time: 0 microseconds
+
+Testing Queue
+Queue add time: 11678 microseconds
+Queue search time: 279 microseconds
