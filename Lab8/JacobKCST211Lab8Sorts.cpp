@@ -36,7 +36,7 @@ using std::to_string;
 #include "Exception.h"
 
 // i picked a semi random word to search for from the file
-const string TEST_WORD = "sheets";
+const string TEST_WORD = "WARRANTIES";
 
 // wrap sdt::hash in a function so it can be used as a template parameter
 size_t hash_func(const string &s) {

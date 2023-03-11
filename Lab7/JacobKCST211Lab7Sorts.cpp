@@ -131,6 +131,7 @@ int main(int argc, char* argv[]) {
   // run the tests
   for (test_func test : test_functions) {
     test(random_data);
+    print("\n");
   }
 
   file.close();
